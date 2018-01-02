@@ -20,22 +20,34 @@ public class CatSquare{
     private int pX,pY;
     private boolean state = true;
 
-    public CatSquare(Context context, int x, int y,int pX,int pY){
-        this.x =x;
-        this.y= y;
-        this.bitmap =BitmapFactory.decodeResource(context.getResources(), R.drawable.unnamed35);
-        this.pX = pX;
-        this.pY = pY;
+    public CatSquare(Context context, int x, int y,int pX,int pY, int kind){
+        this.x =x;//圖像x
+        this.y= y;//圖像y
+
+        if(kind ==1) {//橙
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
+            Log.i("Cat","1");
+        }
+        else if(kind ==2){//紅
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.unnamed35);
+            Log.i("Cat","2");
+        }
+        else if(kind ==3){//淺藍
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau3);
+            Log.i("Cat","3");
+        }
+        else if(kind ==4){//深藍
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau2);
+            Log.i("Cat","4");
+        }
         Log.i("Cat","CatCreate");
     }
-
     public void draw(Canvas canvas){
         if(state) {
             Paint pen = new Paint();
             pen.setColor(Color.BLUE);
             canvas.drawBitmap(bitmap, x, y, pen);
         }
-
         //Log.i("draw","draw");
     }
     public void move(int pY, int ScreenHeight){
@@ -53,7 +65,6 @@ public class CatSquare{
     public int getY(){
         return y;
     }
-
     public void disappear(){
         state = false;
     }
