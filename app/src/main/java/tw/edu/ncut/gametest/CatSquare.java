@@ -16,14 +16,17 @@ import android.view.View;
 
 public class CatSquare{
     private int x,y;
-    private Bitmap bitmap;
-    private int pX,pY;
-    private boolean state = true;
 
+    private Bitmap bitmap;
+    public int kind;
+    private int pX,pY;
+    public boolean state = true;
+    private int BitmapSize;
     public CatSquare(Context context, int x, int y,int pX,int pY, int kind){
         this.x =x;//圖像x
         this.y= y;//圖像y
-
+        this.pX = pX;
+        this.pY =pY;
         if(kind ==1) {//橙
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
             Log.i("Cat","1");
@@ -40,6 +43,8 @@ public class CatSquare{
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau2);
             Log.i("Cat","4");
         }
+        BitmapSize = this.bitmap.getWidth();
+        this.kind = kind;
         Log.i("Cat","CatCreate");
     }
     public void draw(Canvas canvas){
@@ -48,10 +53,9 @@ public class CatSquare{
             pen.setColor(Color.BLUE);
             canvas.drawBitmap(bitmap, x, y, pen);
         }
-        //Log.i("draw","draw");
     }
     public void move(int pY, int ScreenHeight){
-        if(y+80*(pY+1) < ScreenHeight){
+        if(y+(BitmapSize+10)*(pY+1) < ScreenHeight){
             y+=10;
         }
         else {
@@ -66,6 +70,7 @@ public class CatSquare{
         return y;
     }
     public void disappear(){
+        kind = 0;
         state = false;
     }
 }

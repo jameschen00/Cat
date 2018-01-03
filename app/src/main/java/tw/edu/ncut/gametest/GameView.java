@@ -2,6 +2,8 @@ package tw.edu.ncut.gametest;
 
 import android.content.Context;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import android.graphics.Color;
@@ -26,8 +28,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         Playing,
         Over;
     }
+    private Bitmap bitmap;
+    private int BitmapSize;
     CatSquare catSquares[][];
-    int catArray[][];
+
     GameState gameState;//遊戲狀態
     Thread thread;//遊戲執行緒
     Boolean flag;
@@ -45,23 +49,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
         holder = this.getHolder();
         holder.addCallback(this);
-
+        bitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
+        BitmapSize = bitmap.getWidth(); //取得圖片寬度
         catSquares = new CatSquare[10][10];
-        catArray = new int[10][10];
-        setZOrderOnTop(true);
-        getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        setBackgroundColor(0Xffffffff);
     }
 
     private void mDraw(){
         try {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.WHITE);
-
             for(int i=0;i<10;i++)
-
                 for(int j=0;j<10;j++){
-
                     catSquares[i][j].draw(canvas);
                     catSquares[i][j].move(i,height);
                 }
@@ -78,13 +76,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         for(int i=0; i<10;i++) {
             for (int j = 0; j < 10; j++) {
                 int kind = (int) (Math.random()*10000)%4+1;
-                catSquares[i][j] = new CatSquare(getContext(), x + 70 * j, y-i*70, j,i,kind);
-                catArray[i][j] = kind;
+                catSquares[i][j] = new CatSquare(getContext(), x + BitmapSize * j, y-i*BitmapSize, j,i,kind);
             }
-
         }
-        while(true){
-            //Log.i("run","run");
+        while(flag){
             mDraw();
             try {
                 Thread.sleep(10);
@@ -96,9 +91,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //int specWMode = MeasureSpec.getMode(widthMeasureSpec);
-        //int specHMode = MeasureSpec.getMode(heightMeasureSpec);
-
         this.width = MeasureSpec.getSize(widthMeasureSpec);
         this.height = MeasureSpec.getSize(heightMeasureSpec);
         //
@@ -131,16 +123,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             case MotionEvent.ACTION_DOWN:
                 for(int i=0;i<10;i++)
                     for(int j=0;j<10;j++) {
-                        if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + 70 > x
-                                && catSquares[i][j].getY() < y && catSquares[i][j].getY() + 70 > y) {
-
-                            if(catArray[i][j] != 0)
+                        if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + BitmapSize > x
+                                && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
+                            if(catSquares[i][j].state)
                             {
                                 Log.i("No", i + "," + j);
-                                Log.i("Kind",catArray[i][j]+"");
-                                catArray[i][j] = 0;
-                                catSquares[i][j].disappear();
-                                sort();
+                                Log.i("Kind",catSquares[i][j].kind+"");
+                                catSquares[i][j].disappear(); //消除方塊
+                                sort(); //排列方塊
                             }
                         }
                     }
@@ -148,16 +138,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         }
         return false;
     }
+
     public void sort(){
         for(int i=1;i<10;i++){
             for(int j=0;j<10;j++){
-                if(catArray[i-1][j]== 0 )
+                if(!catSquares[i-1][j].state)//判斷下面方塊是否消除
                 {
-                    catArray[i-1][j] = catArray[i][j];
-                    catArray[i][j] = 0;
+                    CatSquare temp; //上下方塊交換
+                    temp = catSquares[i-1][j];
                     catSquares[i-1][j] = catSquares[i][j];
-
+                    catSquares[i][j] =temp;
                 }
+
             }
         }
     }
