@@ -16,7 +16,7 @@ import android.view.View;
 
 public class CatSquare{
     private int x,y;
-
+    private int v=100;
     private Bitmap bitmap;
     public int kind;
     private int pX,pY;
@@ -55,11 +55,14 @@ public class CatSquare{
         }
     }
     public void move(int pY, int ScreenHeight){
-        if(y+(BitmapSize+10)*(pY+1) < ScreenHeight){
-            y+=10;
+        if(y+(BitmapSize+v)*(pY+1) < ScreenHeight){
+            y+=v;
         }
         else {
             //y=ScreenHeight-70*pY;
+        }
+        if(v>=5){
+            v*=0.8;
         }
         //Log.i("movey",y+"");
     }

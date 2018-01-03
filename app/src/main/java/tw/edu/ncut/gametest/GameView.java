@@ -30,7 +30,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     }
     private Bitmap bitmap;
     private int BitmapSize;
-    CatSquare catSquares[][];
+    int a;
+    int b;
+    boolean f =true;
+    private int k =0;
+    int stack[] = new int[100] ;
+    private int d =0;
+    private int z =0;
+    private CatSquare catSquares[][];
 
     GameState gameState;//遊戲狀態
     Thread thread;//遊戲執行緒
@@ -39,7 +46,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     Paint paint;//畫筆
     SurfaceHolder holder;//SurfaceView
     int x=0,y=0;
-    int count=0;
     int width,height;//螢幕的寬高
     public GameView(Context context,AttributeSet attributeSet) {
         super(context);
@@ -118,38 +124,179 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     {
         float x = event.getX();
         float y = event.getY();
+
+        int j = (int) x/BitmapSize; //算出方塊的列
+
         switch(event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                for(int i=0;i<10;i++)
-                    for(int j=0;j<10;j++) {
+                for(int i=0;i<10 & j<10;i++)
                         if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + BitmapSize > x
                                 && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
                             if(catSquares[i][j].state)
                             {
-                                Log.i("No", i + "," + j);
+                                Log.i("No", i + "," + j );
                                 Log.i("Kind",catSquares[i][j].kind+"");
+                                search(i,j,catSquares[i][j].kind);
+                                destory();
                                 catSquares[i][j].disappear(); //消除方塊
                                 sort(); //排列方塊
                             }
                         }
-                    }
+
                 return true;
         }
         return false;
     }
+    public void search(int i,int j,int kind){
+        f=true;
+        a = i;
+        b = j;
+        k = kind;
+        z = 0;
+        d = 0;
+        while (f) {
+            Log.i("Kind","這是a:"+a+" 這是b:"+b);
 
-    public void sort(){
-        for(int i=1;i<10;i++){
+            switch (d){
+                case 0:
+                    Log.i("u","up();");
+
+                    up();
+                    break;
+                case 1:
+                    Log.i("r","right();");
+
+                    right();
+                    break;
+                case 2:
+                    Log.i("d","down();");
+
+                    down();
+                    break;
+                case 3:
+                    Log.i("l","left();");
+
+                    left();
+                    break;
+                case 4:
+                    Log.i("r","ret();");
+
+                    ret();
+                    break;
+            }
+            destory();
+        }
+    }
+    public void up(){
+        if(a+1<10){
+            if(catSquares[a+1][b].kind == k){
+                catSquares[a][b].kind *= 10; //標記
+                a++;    //走上面
+                d=0;
+                stack[z++] = 0;
+            }
+            else
+                d++;
+        }
+        else
+            d++;
+    }
+
+    public void right(){
+        if(b+1<10){
+            if(catSquares[a][b+1].kind == k){
+                catSquares[a][b].kind *= 10; //標記
+                Log.i("Kind",catSquares[a][b].kind+"");
+                b++;    //走右邊
+                d=0;
+                stack[z++] = 1;
+            }
+            else
+                d++;
+        }
+        else
+            d++;
+    }
+    public void down(){
+        if(a-1>=0){
+            if(catSquares[a-1][b].kind == k){
+                catSquares[a][b].kind *= 10; //標記
+                Log.i("Kind",catSquares[a][b].kind+"");
+                a--;    //走
+                d=0;
+                stack[z++] = 2;
+            }
+            else
+                d++;
+        }
+        else
+            d++;
+    }
+    public void left(){
+        if(b-1>=0){
+            if(catSquares[a][b-1].kind == k){
+                catSquares[a][b].kind *= 10; //標記
+                Log.i("Kind",catSquares[a][b].kind+"");
+                b--;    //走右邊
+                d=0;
+                stack[z++] = 3;
+            }
+            else
+                d++;
+        }
+        else
+            d++;
+    }
+    public void ret(){
+        if(--z <0){
+            f =false;
+            return;
+        }
+        else{
+            catSquares[a][b].kind *= 10; //標記
+            Log.i("Kind",catSquares[a][b].kind+"");
+            switch (stack[z]){
+                case 0:a--;
+                    break;
+                case 1:b--;
+                    break;
+                case 2:a++;
+                    break;
+                case 3:b++;
+                    break;
+            }
+            d=0;
+        }
+    }
+
+    public void destory(){
+        for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
-                if(!catSquares[i-1][j].state)//判斷下面方塊是否消除
+                if(catSquares[i][j].kind == k*10)
                 {
-                    CatSquare temp; //上下方塊交換
-                    temp = catSquares[i-1][j];
-                    catSquares[i-1][j] = catSquares[i][j];
-                    catSquares[i][j] =temp;
+                    catSquares[i][j].kind =0;
+                    catSquares[i][j].state = false;
                 }
+            }
+        }
 
+    }
+    public void sort(){
+        int a=0;
+        while(a<10) {
+            a++;
+            for (int i = 1; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (!catSquares[i - 1][j].state && catSquares[i][j].state)//判斷下面方塊是否消除
+                    {
+                        CatSquare temp; //上下方塊交換
+                        temp = catSquares[i - 1][j];
+                        catSquares[i - 1][j] = catSquares[i][j];
+                        catSquares[i][j] = temp;
+                    }
+
+                }
             }
         }
     }
