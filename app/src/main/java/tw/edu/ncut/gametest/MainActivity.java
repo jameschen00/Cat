@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void make_blue_cat(View view) {
         gameManager.regist(new BlueCat(MainActivity.this,
-                gameManager.getWidth() - RedCat.CatWidth - gameManager.getHeight() / 2,
-                gameManager.getHeight() - RedCat.CatHeight));
+                gameManager.getWidth() - BlueCat.CatWidth - gameManager.getHeight() / 2,
+                gameManager.getHeight() - BlueCat.CatHeight));
     }
+
+
 }

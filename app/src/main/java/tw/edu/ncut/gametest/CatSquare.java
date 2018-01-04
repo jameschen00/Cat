@@ -22,30 +22,31 @@ public class CatSquare{
     private int pX,pY;
     public boolean state = true;
     private int BitmapSize;
-    public CatSquare(Context context, int x, int y,int pX,int pY, int kind){
+    public CatSquare(Context context, int x, int y,int pX,int pY, int kind,int BitmapSize){
         this.x =x;//圖像x
         this.y= y;//圖像y
         this.pX = pX;
         this.pY =pY;
         if(kind ==1) {//橙
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
-            Log.i("Cat","1");
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
+            bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
         else if(kind ==2){//紅
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.unnamed35);
-            Log.i("Cat","2");
+            bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
+
         }
         else if(kind ==3){//淺藍
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau3);
-            Log.i("Cat","3");
+            bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
         else if(kind ==4){//深藍
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau2);
-            Log.i("Cat","4");
+            bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
-        BitmapSize = this.bitmap.getWidth();
+        this.BitmapSize = BitmapSize;
         this.kind = kind;
-        Log.i("Cat","CatCreate");
+        //Log.i("Cat","CatCreate");
     }
     public void draw(Canvas canvas){
         if(state) {
@@ -55,14 +56,18 @@ public class CatSquare{
         }
     }
     public void move(int pY, int ScreenHeight){
-        if(y+(BitmapSize+v)*(pY+1) < ScreenHeight){
-            y+=v;
+        if(y+(BitmapSize+50)*(pY+1) < ScreenHeight*0.5){
+            y+=50;
         }
-        else {
-            //y=ScreenHeight-70*pY;
+        if(y+(BitmapSize+25)*(pY+1) < ScreenHeight*0.7){
+            y+=25;
         }
-        if(v>=5){
-            v*=0.8;
+
+        else if(y+(BitmapSize+10)*(pY+1) < ScreenHeight*0.9){
+            y+=10;
+        }
+        else if(y+(BitmapSize+5)*(pY+1) <= ScreenHeight){
+            y+=5;
         }
         //Log.i("movey",y+"");
     }
