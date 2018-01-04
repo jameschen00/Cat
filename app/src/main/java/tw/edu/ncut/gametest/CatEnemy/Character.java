@@ -13,10 +13,12 @@ abstract class Character {
         WAIT_FOR_DESTROY,
     }
 
-    public Character(int heal, int attack){
-        this.heal = heal;
-        this.attack = attack;
+    public Character(){
         state = CharacterState.COLLISION_ON;
+    }
+
+    public Character(CharacterState characterState){
+        state = characterState;
     }
 
     protected void onCollisionEnter(Character character){};
@@ -44,7 +46,7 @@ abstract class Character {
         }
     }
 
-    protected abstract void moveEvent(int screenWidth, int screenHeight);
+    protected abstract void update(int screenWidth, int screenHeight);
 
     public abstract void onHit(Character character);
 
@@ -52,9 +54,9 @@ abstract class Character {
 
     abstract void onDraw(Canvas canvas);
 
-    public final int getHeal() { return heal; }
+    public abstract int getHeal();
 
-    public final int getAttack() { return attack; }
+    public abstract int getAttack();
 
     public final void setTag(String tag) { this.tag = tag; }
     public final String getTag() { return tag; }
@@ -63,8 +65,6 @@ abstract class Character {
 
     public CharacterState getState(){ return state; }
 
-    protected int heal;
-    protected int attack;
     protected CharacterState state;
     protected String tag;
     private List<Character> _collisionList = new LinkedList<>();

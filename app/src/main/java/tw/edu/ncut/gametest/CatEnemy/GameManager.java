@@ -58,7 +58,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
             }
             for(int i = 0;i < characterList.size(); ++i){
                 Character chA = characterList.get(i);
-                chA.moveEvent(GameManager.this.getWidth(), GameManager.this.getHeight());
+                chA.update(GameManager.this.getWidth(), GameManager.this.getHeight());
                 if(chA.getState() == Character.CharacterState.COLLISION_ON) {
                     Rect rectA = chA.getRect();
                     chA.__collision_init();
@@ -102,7 +102,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
         characterList.add(character);
     }
 
-    public void unregist(Character character) {
+    private void unregist(Character character) {
         if(!characterList.contains(character))
             return;
         characterList.remove(character);
@@ -114,9 +114,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-    }
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) { }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {

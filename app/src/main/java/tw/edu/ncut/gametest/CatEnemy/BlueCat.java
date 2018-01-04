@@ -15,25 +15,16 @@ import tw.edu.ncut.gametest.R;
  * Created by HatsuneMiku on 2018/1/3.
  */
 
-public class BlueCat extends Character {
-    private Bitmap bitmap;
-    private int x = 0;
-    private int y = 0;
-    private int w = 15;
-    private int h = 15;
+public class BlueCat extends CatCharacter {
     private int stepSize = 1;
 
     public BlueCat(Context context,int width, int height) {
-        super(100, 20);
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau2);
-        bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
-        x = width - w;
-        y = height - h;
+        super(context, 100, 20, width - 15, height - 15, 15, 15, R.drawable.miau2);
         tag = "BLUE TEAM";
     }
 
     @Override
-    protected void moveEvent(int screenWidth, int screenHeight) {
+    protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();
         Character character = null;
 
@@ -59,16 +50,5 @@ public class BlueCat extends Character {
         if(heal <= 0) {
             this.state = CharacterState.WAIT_FOR_DESTROY;
         }
-    }
-
-    @Override
-    public Rect getRect() {
-        return new Rect(x, y, x + w, y + h);
-    }
-
-    @Override
-    void onDraw(Canvas canvas) {
-        Paint pen = new Paint();
-        canvas.drawBitmap(bitmap, x, y, pen);
     }
 }

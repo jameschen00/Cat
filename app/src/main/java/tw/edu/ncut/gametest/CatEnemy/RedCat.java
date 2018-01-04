@@ -16,24 +16,16 @@ import tw.edu.ncut.gametest.R;
  * Created by HatsuneMiku on 2018/1/3.
  */
 
-public class RedCat extends Character {
-    private Bitmap bitmap;
-    private int x = 0;
-    private int y = 0;
-    private int w = 15;
-    private int h = 15;
+public class RedCat extends CatCharacter {
     private int stepSize = 1;
 
     public RedCat(Context context, int height) {
-        super(100, 20);
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.unnamed35);
-        bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
-        y = height - h;
+        super(context, 100, 20, 0, height - 15, 15, 15, R.drawable.unnamed);
         tag = "RED TEAM";
     }
 
     @Override
-    protected void moveEvent(int screenWidth, int screenHeight) {
+    protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();
         Character character = null;
 
@@ -59,16 +51,5 @@ public class RedCat extends Character {
         if(heal <= 0) {
             this.state = CharacterState.WAIT_FOR_DESTROY;
         }
-    }
-
-    @Override
-    public Rect getRect() {
-        return new Rect(x, y, x + w, y + h);
-    }
-
-    @Override
-    void onDraw(Canvas canvas) {
-        Paint pen = new Paint();
-        canvas.drawBitmap(bitmap, x, y, pen);
     }
 }
