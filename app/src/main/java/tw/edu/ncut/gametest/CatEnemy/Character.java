@@ -21,10 +21,11 @@ abstract class Character {
         state = characterState;
     }
 
-    protected void onCollisionEnter(Character character){};
-    protected void onCollisionLeave(Character character){};
-    protected void onDestroy() {};
+    protected void onCollisionEnter(Character character){}; // when someone touch you
+    protected void onCollisionLeave(Character character){}; // when someone leave you
+    protected void onDestroy() {}; // when destroy
 
+    /******* DO NOT CHANGE THESE FUNCTION *******/
     private List<Character> tmp;
     final void __collision_init() {
         tmp = new LinkedList<>(_collisionList);
@@ -45,14 +46,15 @@ abstract class Character {
             _collisionList.remove(cc);
         }
     }
+    /***************************************************/
 
-    protected abstract void update(int screenWidth, int screenHeight);
+    protected abstract void update(int screenWidth, int screenHeight); //
 
-    public abstract void onHit(Character character);
+    public abstract void onHit(Character character); // when someone want to hit you
 
     public abstract Rect getRect();
 
-    abstract void onDraw(Canvas canvas);
+    abstract void onDraw(Canvas canvas); // draw event
 
     public abstract int getHeal();
 
@@ -61,7 +63,7 @@ abstract class Character {
     public final void setTag(String tag) { this.tag = tag; }
     public final String getTag() { return tag; }
 
-    protected final List<Character> getCollisionList() { return new LinkedList<>(_collisionList); }
+    protected final List<Character> getCollisionList() { return new LinkedList<>(_collisionList); } // who is touching you
 
     public CharacterState getState(){ return state; }
 

@@ -13,20 +13,13 @@ import tw.edu.ncut.gametest.R;
  * Created by HatsuneMiku on 2018/1/4.
  */
 
+//see annotation on Character.java
 public abstract class CatCharacter extends Character {
 
     protected int heal;
     protected int attack;
     protected int x, y, w, h;
     protected Bitmap bitmap;
-
-    public CatCharacter(Context context, int heal, int attack, int r_bitmap) {
-        this(context, heal, attack, 0, 0, r_bitmap);
-    }
-
-    public CatCharacter(Context context, int heal, int attack, int x, int y, int r_bitmap) {
-        this(context, heal, attack, x, y, 15, 15, r_bitmap);
-    }
 
     public CatCharacter(Context context, int heal, int attack, int x, int y, int w, int h, int r_bitmap) {
         this.heal = heal;

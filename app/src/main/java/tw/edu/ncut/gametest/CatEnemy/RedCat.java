@@ -16,11 +16,14 @@ import tw.edu.ncut.gametest.R;
  * Created by HatsuneMiku on 2018/1/3.
  */
 
+//see annotation on Character.java
 public class RedCat extends CatCharacter {
     private int stepSize = 1;
+    public static final int CatWidth = 15;
+    public static final int CatHeight = 15;
 
-    public RedCat(Context context, int height) {
-        super(context, 100, 20, 0, height - 15, 15, 15, R.drawable.unnamed);
+    public RedCat(Context context, int x, int y) {
+        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.unnamed);
         tag = "RED TEAM";
     }
 
@@ -30,7 +33,7 @@ public class RedCat extends CatCharacter {
         Character character = null;
 
         for(Character c : collisionList) {
-            if(c.getTag().equals("BLUE TEAM")){
+            if(c.getTag().equals("BLUE TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
                 character = c;
                 character.onHit(this);
                 break;

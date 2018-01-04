@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import tw.edu.ncut.gametest.CatEnemy.BlueCat;
+import tw.edu.ncut.gametest.CatEnemy.Castle;
 import tw.edu.ncut.gametest.CatEnemy.GameManager;
 import tw.edu.ncut.gametest.CatEnemy.RedCat;
 
@@ -22,31 +23,52 @@ public class MainActivity extends AppCompatActivity {
         gameManager.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                gameManager.regist(new RedCat(MainActivity.this, gameManager.getHeight()));
-                gameManager.regist(new BlueCat(MainActivity.this,
-                        gameManager.getWidth(),
-                        gameManager.getHeight()));
+                gameManager.regist(new Castle(
+                        MainActivity.this,
+                        1000,
+                        0,
+                        0,
+                        0,
+                        gameManager.getHeight() / 2,
+                        gameManager.getHeight(),
+                        R.drawable.red,
+                        "RED TEAM",
+                        new Castle.DestroyCallBack() {
+                            @Override
+                            public void onDestroy() {}
+                        }));
+
+                gameManager.regist(new Castle(
+                        MainActivity.this,
+                        1000,
+                        0,
+                        gameManager.getWidth() - gameManager.getHeight() / 2,
+                        0,
+                        gameManager.getHeight() / 2,
+                        gameManager.getHeight(),
+                        R.drawable.blue,
+                        "BLUE TEAM",
+                        new Castle.DestroyCallBack() {
+                            @Override
+                            public void onDestroy() {}
+                        }));
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-            }
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) { }
 
             @Override
-            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-            }
+            public void surfaceDestroyed(SurfaceHolder surfaceHolder) { }
         });
     }
 
     public void make_red_cat(View view) {
-        gameManager.regist(new RedCat(MainActivity.this, gameManager.getHeight()));
+        gameManager.regist(new RedCat(MainActivity.this, gameManager.getHeight() / 2, gameManager.getHeight() - RedCat.CatHeight));
     }
 
     public void make_blue_cat(View view) {
         gameManager.regist(new BlueCat(MainActivity.this,
-                gameManager.getWidth(),
-                gameManager.getHeight()));
+                gameManager.getWidth() - RedCat.CatWidth - gameManager.getHeight() / 2,
+                gameManager.getHeight() - RedCat.CatHeight));
     }
 }
