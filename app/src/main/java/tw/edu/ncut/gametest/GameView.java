@@ -29,7 +29,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         Playing,
         Over;
     }
-    private GameManager gameManager;
+
     private Bitmap bitmap;
     private int BitmapSize;
     private int a;
@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     private int d =0;
     private int z =0;
     private CatSquare catSquares[][];
-
+    private GameManager gameManager;
     GameState gameState;//遊戲狀態
     Thread thread;//遊戲執行緒
     Boolean flag;
@@ -48,7 +48,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     SurfaceHolder holder;//SurfaceView
     int x=0,y=0;
     int width,height;//螢幕的寬高
-    public GameView(Context context,AttributeSet attributeSet) {
+    public GameView(Context context, AttributeSet attributeSet) {
         super(context,attributeSet);
         flag = true;
         thread = new Thread(this);
@@ -56,6 +56,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         holder.addCallback(this);
 
         catSquares = new CatSquare[10][10];
+    }
+
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     private void mDraw(){
@@ -262,7 +266,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     }
 
     public void destorySquare(){
-        for(int i=0;i<10;i++){
+       /* for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 if(catSquares[i][j].kind == k*10)
                 {
@@ -270,7 +274,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
                 }
             }
-        }
+        }*/
+        catSquares[a][b].disappear();
     }
     public void sortSquare(){
         int a=0;
@@ -306,5 +311,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             }
         }
         Log.i("-------------","-------------------------------------------------------");
+        if(gameManager != null) {
+            gameManager.regist(new RedCat(getContext(),
+                    gameManager.getHeight() / 2,
+                    gameManager.getHeight() - RedCat.CatHeight));
+        }
     }
 }
