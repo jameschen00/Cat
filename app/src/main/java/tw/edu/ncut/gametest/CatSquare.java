@@ -10,23 +10,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Created by wangjianhong on 2017/12/30.
- */
 
 public class CatSquare{
     private int x,y;
     private int v=100;
-    private Bitmap bitmap;
+    public Bitmap bitmap;
     public int kind;
-    private int pX,pY;
     public boolean state = true;
     private int BitmapSize;
     public CatSquare(Context context, int x, int y,int pX,int pY, int kind,int BitmapSize){
         this.x =x;//圖像x
         this.y= y;//圖像y
-        this.pX = pX;
-        this.pY = pY;
         if(kind ==1) {//橙
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cat_orange);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
@@ -52,6 +46,7 @@ public class CatSquare{
         if(state) {
             canvas.drawBitmap(bitmap, x, y, null);
         }
+
     }
     public void move(int pY, int ScreenHeight){
         if(y+(BitmapSize+50)*(pY+1) < ScreenHeight*0.5){
