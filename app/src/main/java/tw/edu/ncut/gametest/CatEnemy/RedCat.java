@@ -22,8 +22,14 @@ public class RedCat extends CatCharacter {
     public static final int CatWidth = 15;
     public static final int CatHeight = 15;
 
+    @Deprecated
     public RedCat(Context context, int x, int y) {
         super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.unnamed);
+        tag = "RED TEAM";
+    }
+
+    public RedCat(Bitmap bitmap, int x, int y) {
+        super(bitmap, 100, 20, x, y, CatWidth, CatHeight);
         tag = "RED TEAM";
     }
 
@@ -41,10 +47,7 @@ public class RedCat extends CatCharacter {
         }
 
         if(character == null) {
-            if (x + w + stepSize > screenWidth) {
-                return;
-            }
-            x += stepSize;
+            moveRight(screenWidth, stepSize);
         }
     }
 

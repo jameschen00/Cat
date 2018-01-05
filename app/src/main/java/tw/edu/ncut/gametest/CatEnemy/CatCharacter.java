@@ -21,6 +21,7 @@ public abstract class CatCharacter extends Character {
     protected int x, y, w, h;
     protected Bitmap bitmap;
 
+    @Deprecated
     public CatCharacter(Context context, int heal, int attack, int x, int y, int w, int h, int r_bitmap) {
         this.heal = heal;
         this.attack = attack;
@@ -32,6 +33,25 @@ public abstract class CatCharacter extends Character {
         if(bitmap.getWidth() != w && bitmap.getHeight() != h) {
             bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
         }
+    }
+
+    public CatCharacter(Bitmap bitmap, int heal, int attack, int x, int y, int w, int h){
+        this.heal = heal;
+        this.attack = attack;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.bitmap = bitmap;
+    }
+
+    public CatCharacter(int heal, int attack, int x, int y, int w, int h){
+        this.heal = heal;
+        this.attack = attack;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
     }
 
     @Override
@@ -47,7 +67,9 @@ public abstract class CatCharacter extends Character {
 
     @Override
     void onDraw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, x, y, null);
+        if(bitmap != null) {
+            canvas.drawBitmap(bitmap, x, y, null);
+        }
     }
 
     @Override
@@ -58,5 +80,20 @@ public abstract class CatCharacter extends Character {
     @Override
     public int getAttack() {
         return attack;
+    }
+
+    void moveRight(int screenWidth, int stepSize) {
+        if (x + w + stepSize > screenWidth) {
+            return;
+        }
+        x += stepSize;
+    }
+
+    void moveLeft(int stepSize) {
+
+        if (x - stepSize < 0) {
+            return;
+        }
+        x -= stepSize;
     }
 }

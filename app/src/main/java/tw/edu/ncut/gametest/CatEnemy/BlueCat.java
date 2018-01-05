@@ -21,8 +21,14 @@ public class BlueCat extends CatCharacter {
     public static final int CatWidth = 15;
     public static final int CatHeight = 15;
 
+    @Deprecated
     public BlueCat(Context context, int x, int y) {
         super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.miau2);
+        tag = "BLUE TEAM";
+    }
+
+    public BlueCat(Bitmap bitmap, int x, int y) {
+        super(bitmap, 100, 20, x, y, CatWidth, CatHeight);
         tag = "BLUE TEAM";
     }
 
@@ -40,10 +46,7 @@ public class BlueCat extends CatCharacter {
         }
 
         if(character == null) {
-            if (x - stepSize < 0) {
-                return;
-            }
-            x -= stepSize;
+            moveLeft(stepSize);
         }
     }
 
