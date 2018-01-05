@@ -114,7 +114,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) { }
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        for(Character character : characterList) {
+            character.onScreenSizeChange(getWidth(), getHeight());
+        }
+    }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {

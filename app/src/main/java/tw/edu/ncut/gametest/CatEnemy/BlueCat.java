@@ -26,7 +26,7 @@ public class BlueCat extends CatCharacter {
 
     @Deprecated
     public BlueCat(Context context, int x, int y) {
-        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.miau2);
+        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.cat_blue);
         tag = "BLUE TEAM";
     }
 

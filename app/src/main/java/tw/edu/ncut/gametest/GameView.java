@@ -37,13 +37,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     private int BitmapSize;
     private int width,height;//螢幕的寬高
     private CatSquare catSquares[][];
-
+    //
     private GameManager gameManager;
     private Thread thread;//遊戲執行緒
     private boolean flag;
     private Canvas canvas;//畫布
     private SurfaceHolder holder;//SurfaceView
-
+    private Bitmap summon_cat1;
+    //
     public GameView(Context context, AttributeSet attributeSet) {
         super(context,attributeSet);
         thread = new Thread(this);
@@ -51,6 +52,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         holder = this.getHolder();
         holder.addCallback(this);
         catSquares = new CatSquare[10][10];
+
+        summon_cat1 = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.cat_red);
+
     }
 
     public void setGameManager(GameManager gameManager) {
@@ -312,11 +316,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             }
         }
         Log.i("-------------",""+count);
-        if(count > 10)
+        if(count > 3)
             if(gameManager != null) {
-                gameManager.regist(new RedCat(getContext(),
+                gameManager.regist(new RedCat(summon_cat1,
                         gameManager.getHeight() / 2,
                         gameManager.getHeight() - RedCat.CatHeight));
             }//
+
     }
 }

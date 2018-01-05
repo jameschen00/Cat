@@ -28,20 +28,20 @@ public class CatSquare{
         this.pX = pX;
         this.pY = pY;
         if(kind ==1) {//橙
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cat_orange);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
         else if(kind ==2){//紅
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.unnamed35);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cat_red);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
 
         }
         else if(kind ==3){//淺藍
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau3);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cat_skyblue);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
         else if(kind ==4){//深藍
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau2);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cat_blue);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
         }
         this.BitmapSize = BitmapSize;
@@ -66,6 +66,12 @@ public class CatSquare{
         }
         else if(y+(BitmapSize+5)*(pY+1) <= ScreenHeight){
             y+=5;
+        }
+        else if(y+(BitmapSize+2)*(pY+1) <= ScreenHeight){
+            y+=2;
+        }
+        else if(y+(BitmapSize+1)*(pY+1) <= ScreenHeight){
+            y+=1;
         }
         //Log.i("movey",y+"");
     }

@@ -11,18 +11,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="make_red_cat"
-        android:text="Make Red Cat" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="make_blue_cat"
-        android:text="Make Blue Cat" />
-
     <tw.edu.ncut.gametest.GameView
         android:id="@+id/GameView"
         android:layout_width="match_parent"
