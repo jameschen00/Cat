@@ -21,13 +21,18 @@ abstract class Character {
         state = characterState;
     }
 
-    protected void onCollisionEnter(Character character){}; // when someone touch you
-    protected void onCollisionLeave(Character character){}; // when someone leave you
-    protected void onDestroy() {}; // when destroy
+    protected void onCollisionEnter(Character character){}  // when someone touch you
+    protected void onCollisionLeave(Character character){}  // when someone leave you
+    protected void onDestroy() {}                           // when destroy
+    protected void onScreenSizeChange(int screenWidth, int screenHeight) {}
 
     /******* DO NOT CHANGE THESE FUNCTION *******/
+    private long previousTime = 0;
     private List<Character> tmp;
     final void __collision_init() {
+        if(previousTime == 0) {
+            previousTime = System.currentTimeMillis();
+        }
         tmp = new LinkedList<>(_collisionList);
     }
 
@@ -45,6 +50,11 @@ abstract class Character {
             onCollisionLeave(cc);
             _collisionList.remove(cc);
         }
+        previousTime = System.currentTimeMillis();
+    }
+
+    final long getDelTime() {
+        return System.currentTimeMillis() - previousTime;
     }
     /***************************************************/
 
