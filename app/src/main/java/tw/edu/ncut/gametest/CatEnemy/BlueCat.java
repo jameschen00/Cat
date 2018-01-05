@@ -18,6 +18,9 @@ import tw.edu.ncut.gametest.R;
 //see annotation on Character.java
 public class BlueCat extends CatCharacter {
     private int stepSize = 1;
+    private int attackSpeed = 0;
+    private int attackCount = 0;
+
     public static final int CatWidth = 15;
     public static final int CatHeight = 15;
 
@@ -40,12 +43,18 @@ public class BlueCat extends CatCharacter {
         for(Character c : collisionList) {
             if(c.getTag().equals("RED TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
                 character = c;
-                character.onHit(this);
+                if(attackCount == attackSpeed) {
+                    attackCount = 0;
+                    character.onHit(this);
+                } else {
+                    attackCount += 1;
+                }
                 break;
             }
         }
 
         if(character == null) {
+            attackCount = 0;
             moveLeft(stepSize);
         }
     }

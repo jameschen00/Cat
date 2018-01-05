@@ -4,10 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
-
-import tw.edu.ncut.gametest.R;
 
 /**
  * Created by HatsuneMiku on 2018/1/4.
@@ -43,6 +40,9 @@ public abstract class CatCharacter extends Character {
         this.w = w;
         this.h = h;
         this.bitmap = bitmap;
+        if(bitmap.getWidth() != w && bitmap.getHeight() != h) {
+            this.bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
+        }
     }
 
     public CatCharacter(int heal, int attack, int x, int y, int w, int h){

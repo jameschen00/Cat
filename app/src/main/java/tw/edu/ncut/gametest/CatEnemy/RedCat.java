@@ -2,11 +2,6 @@ package tw.edu.ncut.gametest.CatEnemy;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 
 import java.util.List;
 
@@ -19,6 +14,9 @@ import tw.edu.ncut.gametest.R;
 //see annotation on Character.java
 public class RedCat extends CatCharacter {
     private int stepSize = 1;
+    private int attackSpeed = 0;
+    private int attackCount = 0;
+
     public static final int CatWidth = 15;
     public static final int CatHeight = 15;
 
@@ -41,12 +39,18 @@ public class RedCat extends CatCharacter {
         for(Character c : collisionList) {
             if(c.getTag().equals("BLUE TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
                 character = c;
-                character.onHit(this);
+                if(attackCount == attackSpeed) {
+                    attackCount = 0;
+                    character.onHit(this);
+                } else {
+                    attackCount += 1;
+                }
                 break;
             }
         }
 
         if(character == null) {
+            attackCount = 0;
             moveRight(screenWidth, stepSize);
         }
     }

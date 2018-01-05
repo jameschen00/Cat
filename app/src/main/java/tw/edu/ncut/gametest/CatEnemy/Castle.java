@@ -1,6 +1,5 @@
 package tw.edu.ncut.gametest.CatEnemy;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 /**
