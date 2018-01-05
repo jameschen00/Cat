@@ -26,7 +26,7 @@ public class CatSquare{
         this.x =x;//圖像x
         this.y= y;//圖像y
         this.pX = pX;
-        this.pY =pY;
+        this.pY = pY;
         if(kind ==1) {//橙
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.miau35);
             bitmap = Bitmap.createScaledBitmap(bitmap,BitmapSize,BitmapSize,false);
@@ -50,9 +50,7 @@ public class CatSquare{
     }
     public void draw(Canvas canvas){
         if(state) {
-            Paint pen = new Paint();
-            pen.setColor(Color.BLUE);
-            canvas.drawBitmap(bitmap, x, y, pen);
+            canvas.drawBitmap(bitmap, x, y, null);
         }
     }
     public void move(int pY, int ScreenHeight){

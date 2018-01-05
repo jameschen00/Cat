@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 gameView.setGameManager(gameManager);
                 gameManager.regist(new Castle(
-                        BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.red),
+                        BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.myhome),
                         1000,
                         0,
                         0,
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void make_red_cat(View view) {
         gameManager.regist(new RedCat(
-                BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.unnamed),
+                BitmapFactory.decodeResource(MainActivity.this.getResources(), R.drawable.unnamed35),
                 gameManager.getHeight() / 2, gameManager.getHeight() - RedCat.CatHeight));
     }
 

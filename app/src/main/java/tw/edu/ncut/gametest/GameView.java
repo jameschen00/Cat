@@ -24,37 +24,32 @@ import tw.edu.ncut.gametest.CatEnemy.GameManager;
 import tw.edu.ncut.gametest.CatEnemy.RedCat;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runnable {
-    enum GameState{
-        Menu,
-        Playing,
-        Over;
-    }
 
-    private Bitmap bitmap;
-    private int BitmapSize;
-    private int a;
-    private int b;
-    boolean f =true;
-    private int k =0;
-    int stack[] = new int[100] ;
+    //
+    private int a,b,count;
+    private boolean f =true;
+    private int k =0; //種類
     private int d =0;
     private int z =0;
+    private int stack[] = new int[100] ;
+    //
+    private int x=0,y=0;
+    private int BitmapSize;
+    private int width,height;//螢幕的寬高
     private CatSquare catSquares[][];
+
     private GameManager gameManager;
-    GameState gameState;//遊戲狀態
-    Thread thread;//遊戲執行緒
-    Boolean flag;
-    Canvas canvas;//畫布
-    SurfaceHolder holder;//SurfaceView
-    int x=0,y=0;
-    int width,height;//螢幕的寬高
+    private Thread thread;//遊戲執行緒
+    private boolean flag;
+    private Canvas canvas;//畫布
+    private SurfaceHolder holder;//SurfaceView
+
     public GameView(Context context, AttributeSet attributeSet) {
         super(context,attributeSet);
-        flag = true;
         thread = new Thread(this);
+        flag = true;
         holder = this.getHolder();
         holder.addCallback(this);
-
         catSquares = new CatSquare[10][10];
     }
 
@@ -71,7 +66,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                     catSquares[i][j].draw(canvas);
                     catSquares[i][j].move(i,height);
                 }
-            }
+        }
         catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -87,7 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                 catSquares[i][j] = new CatSquare(getContext(), x + BitmapSize * j, y-i*BitmapSize, j,i,kind,BitmapSize);
             }
         }
-        while(flag){
+        while(true){
             mDraw();
             try {
                 Thread.sleep(10);
@@ -106,7 +101,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         BitmapSize =  width/10 ;//取得圖片寬度
         Log.i("bitmapsize",BitmapSize+"");
     }
-    //SurfaceView创建时调用
+    //SurfaceView
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i("","");
@@ -134,16 +129,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         {
             case MotionEvent.ACTION_DOWN:
                 for(int i=0;i<10 & j<10;i++)
-                        if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + BitmapSize > x
-                                && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
-                            if(catSquares[i][j].state)
-                            {
-                                Log.i("No", i + "," + j );
-                                Log.i("Kind",catSquares[i][j].kind+"");
-                                search(i,j,catSquares[i][j].kind);
-                                sortSquare(); //排列方塊
-                            }
+                    if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + BitmapSize > x
+                            && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
+                        if(catSquares[i][j].state)
+                        {
+                            Log.i("No", i + "," + j );
+                            Log.i("Kind",catSquares[i][j].kind+"");
+                            search(i,j,catSquares[i][j].kind);
+                            sortSquare(); //排列方塊
                         }
+                    }
                 return true;
         }
         return false;
@@ -155,6 +150,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         k = kind;
         z = 0;
         d = 0;
+        count = 0;
         while (f) {
             switch (d){
                 case 0:
@@ -187,7 +183,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public void up(){
         if(a+1<10){
             if(catSquares[a+1][b].kind == k){
-                catSquares[a][b].kind *= 10; //標記
+                catSquares[a][b].kind = k*10; //標記
                 a++;    //走上面
                 d=0;
                 stack[z++] = 0;
@@ -201,7 +197,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public void right(){
         if(b+1<10){
             if(catSquares[a][b+1].kind == k){
-                catSquares[a][b].kind *= 10; //標記
+                catSquares[a][b].kind = k*10; //標記
                 Log.i("Kind",catSquares[a][b].kind+"");
                 b++;    //走右
                 d=0;
@@ -216,7 +212,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public void down(){
         if(a-1>=0){
             if(catSquares[a-1][b].kind == k){
-                catSquares[a][b].kind *= 10; //標記
+                catSquares[a][b].kind = k*10; //標記
                 Log.i("Kind",catSquares[a][b].kind+"");
                 a--;    //走下
                 d=0;
@@ -231,7 +227,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public void left(){
         if(b-1>=0){
             if(catSquares[a][b-1].kind == k){
-                catSquares[a][b].kind *= 10; //標記
+                catSquares[a][b].kind = k*10; //標記
                 Log.i("Kind",catSquares[a][b].kind+"");
                 b--;    //走左
                 d=0;
@@ -244,7 +240,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             d++;
     }
     public void ret(){
-        catSquares[a][b].kind *= 10; //標記
+        if(catSquares[a][b].state)
+            catSquares[a][b].kind = k*10;;
         if(--z <0){
             f =false;
             return;
@@ -263,6 +260,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             }
             d=0;
         }
+
     }
 
     public void destorySquare(){
@@ -275,7 +273,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                 }
             }
         }*/
-        catSquares[a][b].disappear();
+        if(catSquares[a][b].state) {
+            catSquares[a][b].disappear();
+            count++;
+        }
     }
     public void sortSquare(){
         int a=0;
@@ -310,11 +311,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
             }
         }
-        Log.i("-------------","-------------------------------------------------------");
-        if(gameManager != null) {
-            gameManager.regist(new RedCat(getContext(),
-                    gameManager.getHeight() / 2,
-                    gameManager.getHeight() - RedCat.CatHeight));
-        }
+        Log.i("-------------",""+count);
+        if(count > 10)
+            if(gameManager != null) {
+                gameManager.regist(new RedCat(getContext(),
+                        gameManager.getHeight() / 2,
+                        gameManager.getHeight() - RedCat.CatHeight));
+            }//
     }
 }

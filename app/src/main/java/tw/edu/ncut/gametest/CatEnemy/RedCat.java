@@ -22,7 +22,7 @@ public class RedCat extends CatCharacter {
 
     @Deprecated
     public RedCat(Context context, int x, int y) {
-        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.unnamed);
+        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.unnamed35);
         tag = "RED TEAM";
     }
 
