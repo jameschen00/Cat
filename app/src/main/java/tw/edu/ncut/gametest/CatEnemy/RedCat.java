@@ -31,6 +31,11 @@ public class RedCat extends CatCharacter {
         tag = "RED TEAM";
     }
 
+    public RedCat(Bitmap bitmap, int x, int y, int heal, int attack) {
+        super(bitmap, heal, attack, x, y, CatWidth, CatHeight);
+        tag = "RED TEAM";
+    }
+
     @Override
     protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();

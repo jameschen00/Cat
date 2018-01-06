@@ -35,6 +35,11 @@ public class BlueCat extends CatCharacter {
         tag = "BLUE TEAM";
     }
 
+    public BlueCat(Bitmap bitmap, int x, int y, int heal, int attack) {
+        super(bitmap, heal, attack, x, y, CatWidth, CatHeight);
+        tag = "BLUE TEAM";
+    }
+
     @Override
     protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();

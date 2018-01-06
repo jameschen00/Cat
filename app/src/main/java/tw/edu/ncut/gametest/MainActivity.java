@@ -5,22 +5,23 @@ import android.os.Bundle;
 import android.view.SurfaceHolder;
 
 import tw.edu.ncut.gametest.CatEnemy.GameManager;
+import tw.edu.ncut.gametest.CatEnemy.GameManagerWithCounter;
 import tw.edu.ncut.gametest.CatEnemy.Level;
 
 public class MainActivity extends AppCompatActivity {
-    private GameManager gameManager;
+    private GameManagerWithCounter gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameManager = (GameManager)findViewById(R.id.WarCatGameManager);
+        gameManager = (GameManagerWithCounter)findViewById(R.id.WarCatGameManager);
         final GameView gameView = (GameView)findViewById(R.id.GameView);
         gameManager.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 gameView.setGameManager(gameManager);
-                (new Level(gameManager)).start();
+                (new Level(MainActivity.this, gameManager, gameView)).start();
             }
 
             @Override
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) { }
         });
+
     }
 
 }
