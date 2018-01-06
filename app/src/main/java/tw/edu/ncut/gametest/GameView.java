@@ -18,9 +18,7 @@ import android.view.SurfaceHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import tw.edu.ncut.gametest.CatEnemy.BlueCat;
 import tw.edu.ncut.gametest.CatEnemy.GameManager;
-import tw.edu.ncut.gametest.CatEnemy.RedCat;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runnable {
     //
@@ -38,10 +36,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     //
     private GameManager gameManager;
     private Thread thread;//遊戲執行緒
-    private boolean flag;
     private Canvas canvas;//畫布
     private SurfaceHolder holder;//SurfaceView
-    private Bitmap summon_cat1;
     List<CatDestroy> list;
     SoundPool sound;
     int nyw;
@@ -49,24 +45,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public GameView(Context context, AttributeSet attributeSet) {
         super(context,attributeSet);
         thread = new Thread(this);
-        flag = true;
         holder = this.getHolder();
         holder.addCallback(this);
         catSquares = new CatSquare[10][10];
 
-        summon_cat1 = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.cat_red);
         list = new ArrayList<CatDestroy>();
         sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
         nyw = sound.load(context, R.raw.diamiond , 1);
         Log.i("nyw",nyw+"");
-
-
     }
 
     public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
     }
-    private void mDraw(){
+    private void catDraw(){
         try {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.WHITE);
@@ -80,7 +72,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                 list.get(i).move();
                 if(!list.get(i).state)
                     list.remove(i);
-
             }
         }
         catch (Exception e){
@@ -98,8 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
             }
         }
         while(true){
-            mDraw();
-
+            catDraw();
             try {
                 Thread.sleep(10);
             }catch (Exception e){
@@ -131,7 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        flag = false;
+
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -321,13 +311,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                 }
             }
         }
-        Log.i("-------------",""+count);
-        if(count > 3)
-            if(gameManager != null) {
-                gameManager.regist(new RedCat(summon_cat1,
-                        gameManager.getHeight() / 2,
-                        gameManager.getHeight() - RedCat.CatHeight));
-            }
-
+        new SummonMonster(gameManager,count).start();
     }
 }
