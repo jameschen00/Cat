@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
+public class GameManager extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 
     private class Thread extends java.lang.Thread{
 
@@ -39,16 +39,17 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
 
     private SurfaceHolder holder;
     private Thread thread;
-    private Runnable gameThread = new Runnable() {
-        private final long perTime = 30;
-        @Override
-        public void run() {
-            long startTime = System.currentTimeMillis();
-            Canvas canvas = holder.lockCanvas();
-            canvas.drawColor(Color.WHITE);
-            for(int i = 0; i < characterList.size(); ++i) {
+    private final long perTime = 30;
+    private boolean pause = false;
+    private boolean requestUpdateScreen = true;
+
+    @Override
+    public void run() {
+        long startTime = System.currentTimeMillis();
+        if(!pause) {
+            for (int i = 0; i < characterList.size(); ++i) { //destroy wait for destroy
                 Character character = characterList.get(i);
-                switch(character.getState()) {
+                switch (character.getState()) {
                     case WAIT_FOR_DESTROY:
                         character.onDestroy();
                         unregist(character);
@@ -56,10 +57,14 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
                         break;
                 }
             }
-            for(int i = 0;i < characterList.size(); ++i){
+
+            Canvas canvas = holder.lockCanvas();
+            canvas.drawColor(Color.WHITE);
+
+            for (int i = 0; i < characterList.size(); ++i) { // main thread, process collision, update, etc...
                 Character chA = characterList.get(i);
                 chA.update(GameManager.this.getWidth(), GameManager.this.getHeight());
-                if(chA.getState() == Character.CharacterState.COLLISION_ON) {
+                if (chA.getState() == Character.CharacterState.COLLISION_ON) {
                     Rect rectA = chA.getRect();
                     chA.__collision_init();
                     for (int o = i + 1; o < characterList.size(); ++o) {
@@ -77,36 +82,59 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback{
                 chA.onDraw(canvas);
             }
             holder.unlockCanvasAndPost(canvas);
-            long endTime = System.currentTimeMillis();
-            long delayTime = perTime - endTime + startTime;
-            if(delayTime > 0) {
-                try {
-                    Thread.sleep(delayTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        } else if(requestUpdateScreen) {
+            requestUpdateScreen = false;
+            Canvas canvas = holder.lockCanvas();
+            canvas.drawColor(Color.WHITE);
+
+            for(Character character : characterList){
+                character.onDraw(canvas);
+            }
+
+            holder.unlockCanvasAndPost(canvas);
+        }
+
+        long endTime = System.currentTimeMillis();
+        long delayTime = perTime - endTime + startTime;
+        if(delayTime > 0) {
+            try {
+                Thread.sleep(delayTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-    };
+    }
 
     public GameManager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        thread = new Thread(gameThread);
+        thread = new Thread(this);
         holder = this.getHolder();
         holder.addCallback(this);
     }
 
     public void regist(Character character) {
-        if(characterList.contains(character))
+        if(character == null || characterList.contains(character) || this.isPaused())
             return;
         characterList.add(character);
     }
 
-    private void unregist(Character character) {
-        if(!characterList.contains(character))
+    protected void unregist(Character character) {
+        if(character == null || !characterList.contains(character))
             return;
         characterList.remove(character);
     }
+
+    public void cleanAllObject() {
+        characterList.clear();
+    }
+
+    public void pauseGame() { this.pause = true; }
+    public void resumeGame() { this.pause = false; }
+
+    public boolean isPaused() { return this.pause | this.thread.stop; }
+    public boolean isStoped() { return this.thread.stop; }
+
+    public void updateScreen() { requestUpdateScreen = true; }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {

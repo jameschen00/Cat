@@ -5,7 +5,7 @@
     tools:context="tw.edu.ncut.gametest.MainActivity"
     android:orientation="vertical">
 
-    <tw.edu.ncut.gametest.CatEnemy.GameManager
+    <tw.edu.ncut.gametest.CatEnemy.GameManagerWithCounter
         android:id="@+id/WarCatGameManager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
