@@ -1,11 +1,7 @@
 package tw.edu.ncut.gametest;
 
 import android.content.Context;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -22,12 +18,7 @@ import tw.edu.ncut.gametest.CatEnemy.GameManager;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runnable {
     //
-    private int a,b,count;
-    private boolean f =true;
-    private int k =0; //種類
-    private int d =0;
-    private int z =0;
-    private int stack[] = new int[100] ;
+    private int count;
     //
     private int x=0,y=0;
     private int BitmapSize;
@@ -38,8 +29,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     private Thread thread;//遊戲執行緒
     private Canvas canvas;//畫布
     private SurfaceHolder holder;//SurfaceView
-    List<CatDestroy> list;
-    SoundPool sound;
+    private List<CatDestroy> list;
+    private SoundPool sound;
+    private boolean gameState;
     int nyw;
     //
     public GameView(Context context, AttributeSet attributeSet) {
@@ -48,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         holder = this.getHolder();
         holder.addCallback(this);
         catSquares = new CatSquare[10][10];
-
+        gameState = true;
         list = new ArrayList<CatDestroy>();
         sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
         nyw = sound.load(context, R.raw.diamiond , 1);
@@ -58,6 +50,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
     }
+    public void GamePause(){
+        gameState = false;
+    }
+
     private void catDraw(){
         try {
             canvas = holder.lockCanvas();
@@ -126,6 +122,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        if(!gameState){
+            return false;
+        }
+
         float x = event.getX();
         float y = event.getY();
 
@@ -143,6 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
                             Log.i("No", i + "," + j );
                             Log.i("Kind",catSquares[i][j].kind+"");
+                            count = 0;
                             search(i,j,catSquares[i][j].kind);
                             sortSquare(); //排列方塊
                             return true;
@@ -153,130 +154,76 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         return false;
     }
     public void search(int i,int j,int kind){
-        f=true;
-        a = i;
-        b = j;
-        k = kind;
-        z = 0;
-        d = 0;
-        count = 0;
-        while (f) {
-            switch (d){
+        boolean f = true;
+        int d = 0;
+        while (f){
+            switch (d) {
                 case 0:
-                    //Log.i("u","up();");
-                    up();
+                    up(i, j, kind);
+                    Log.i("up","up");
+                    d++;
                     break;
                 case 1:
-                    //Log.i("r","right();");
-
-                    right();
+                    right(i, j, kind);
+                    Log.i("right","right");
+                    d++;
                     break;
                 case 2:
-                    //Log.i("d","down();");
-
-                    down();
+                    down(i, j,kind);
+                    Log.i("down","down");
+                    d++;
                     break;
                 case 3:
-                    //Log.i("l","left();");
-
-                    left();
+                    left(i, j,kind);
+                    Log.i("left","left");
+                    d++;
                     break;
-                case 4:
-                    //Log.i("r","ret();");
-                    ret();
+                default:
+                    f = false;
                     break;
-            }
-            destroySquare();
-        }
-    }
-    public void up(){
-        if(a+1<10){
-            if(catSquares[a+1][b].kind == k){
-                catSquares[a][b].kind = k*10; //標記
-                a++;    //走上面
-                d=0;
-                stack[z++] = 0;
-            }
-            else
-                d++;
-        }
-        else
-            d++;
-    }
-    public void right(){
-        if(b+1<10){
-            if(catSquares[a][b+1].kind == k){
-                catSquares[a][b].kind = k*10; //標記
-                //Log.i("Kind",catSquares[a][b].kind+"");
-                b++;    //走右
-                d=0;
-                stack[z++] = 1;
-            }
-            else
-                d++;
-        }
-        else
-            d++;
-    }
-    public void down(){
-        if(a-1>=0){
-            if(catSquares[a-1][b].kind == k){
-                catSquares[a][b].kind = k*10; //標記
-                //Log.i("Kind",catSquares[a][b].kind+"");
-                a--;    //走下
-                d=0;
-                stack[z++] = 2;
-            }
-            else
-                d++;
-        }
-        else
-            d++;
-    }
-    public void left(){
-        if(b-1>=0){
-            if(catSquares[a][b-1].kind == k){
-                catSquares[a][b].kind = k*10; //標記
-                //Log.i("Kind",catSquares[a][b].kind+"");
-                b--;    //走左
-                d=0;
-                stack[z++] = 3;
-            }
-            else
-                d++;
-        }
-        else
-            d++;
-    }
-    public void ret(){
-        if(catSquares[a][b].state)
-            catSquares[a][b].kind = k*10;;
-        if(--z <0){
-            f =false;
-            return;
-        }
-        else{
-            //Log.i("Kind",catSquares[a][b].kind+"");
-            switch (stack[z]){
-                case 0:a--;
-                    break;
-                case 1:b--;
-                    break;
-                case 2:a++;
-                    break;
-                case 3:b++;
-                    break;
-            }
-            d=0;
         }
 
+        destroySquare(i,j);
+        }
+    }
+    public void up(int i,int j,int kind){
+        if(i+1<10){
+            if(catSquares[i+1][j].kind == kind){
+                catSquares[i][j].kind = kind*10; //標記
+                search(i+1,j,kind);
+            }
+        }
+    }
+    public void right(int i,int j,int kind){
+        if(j+1<10){
+            if(catSquares[i][j+1].kind == kind){
+                catSquares[i][j].kind = kind*10; //標記
+                search(i,j+1,kind);
+            }
+        }
+    }
+    public void down(int i,int j,int kind){
+        if(i-1>=0){
+            if(catSquares[i-1][j].kind == kind){
+                catSquares[i][j].kind = kind*10; //標記
+                search(i-1,j,kind);
+            }
+        }
+    }
+    public void left(int i,int j,int kind){
+        if(j-1>=0){
+            if(catSquares[i][j-1].kind == kind){
+                catSquares[i][j].kind = kind*10; //標記
+                search(i,j-1,kind);
+            }
+        }
     }
 
-    public void destroySquare(){
-        if(catSquares[a][b].state) {
-            catSquares[a][b].disappear();
+    public void destroySquare(int i,int j){
+        if(catSquares[i][j].state) {
+            catSquares[i][j].disappear();
             count++;
-            list.add(new CatDestroy(getContext(),catSquares[a][b].bitmap,catSquares[a][b].getX(),catSquares[a][b].getY(),BitmapSize,width,height));
+            list.add(new CatDestroy(getContext(),catSquares[i][j].bitmap,catSquares[i][j].getX(),catSquares[i][j].getY(),BitmapSize,width,height));
         }
     }
     public void sortSquare(){

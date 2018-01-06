@@ -29,7 +29,6 @@ public class SummonMonster extends Thread{
         normal_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_red);
         mid_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_skyblue);
         big_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_orange);
-
     }
 
     @Override
@@ -40,12 +39,6 @@ public class SummonMonster extends Thread{
             big = (count - 2) / 9;
             mid = ((count - 2) % 9) / 3;
             normal = (((count - 2) % 9) % 3);
-            Log.i("-------------","Big"+big);
-
-            Log.i("-------------","Mid"+mid);
-
-            Log.i("-------------","normal"+normal);
-
         }
         while(state) {
             Log.i("-------------","runing");
