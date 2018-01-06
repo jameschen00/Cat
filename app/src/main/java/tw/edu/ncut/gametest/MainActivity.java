@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
                 gameView.setGameManager(gameManager);
                 (new Level(gameManager)).start();
             }
-
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) { }
 
