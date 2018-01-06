@@ -17,21 +17,11 @@ public abstract class CatCharacter extends Character {
     protected int attack;
     protected int x, y, w, h;
     protected Bitmap bitmap;
+    protected Animation animation;
+    public final int WALK_ANIMATION = 0;
+    public final int ATTACK_ANIMATION = 1;
 
     @Deprecated
-    public CatCharacter(Context context, int heal, int attack, int x, int y, int w, int h, int r_bitmap) {
-        this.heal = heal;
-        this.attack = attack;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), r_bitmap);
-        if(bitmap.getWidth() != w && bitmap.getHeight() != h) {
-            bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
-        }
-    }
-
     public CatCharacter(Bitmap bitmap, int heal, int attack, int x, int y, int w, int h){
         this.heal = heal;
         this.attack = attack;
@@ -43,6 +33,16 @@ public abstract class CatCharacter extends Character {
         if(bitmap.getWidth() != w && bitmap.getHeight() != h) {
             this.bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
         }
+    }
+
+    public CatCharacter(Animation animation, int heal, int attack, int x, int y, int w, int h){
+        this.animation = animation;
+        this.heal = heal;
+        this.attack = attack;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
     }
 
     public CatCharacter(int heal, int attack, int x, int y, int w, int h){
@@ -67,7 +67,9 @@ public abstract class CatCharacter extends Character {
 
     @Override
     void onDraw(Canvas canvas) {
-        if(bitmap != null) {
+        if(animation != null) {
+            animation.onDraw(canvas, x, y);
+        } else if(bitmap != null) {
             canvas.drawBitmap(bitmap, x, y, null);
         }
     }
@@ -95,5 +97,9 @@ public abstract class CatCharacter extends Character {
             return;
         }
         x -= stepSize;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
     }
 }

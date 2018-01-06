@@ -4,9 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import tw.edu.ncut.gametest.CatEnemy.BigRedCat;
 import tw.edu.ncut.gametest.CatEnemy.GameManager;
-import tw.edu.ncut.gametest.CatEnemy.MidRedCat;
 import tw.edu.ncut.gametest.CatEnemy.RedCat;
 import tw.edu.ncut.gametest.MainActivity;
 import tw.edu.ncut.gametest.R;
@@ -54,7 +52,7 @@ public class SummonMonster extends Thread{
                 }
                 else if (mid > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new MidRedCat(mid_cat,
+                        gameManager.regist(new RedCat(mid_cat,
                                 gameManager.getHeight() / 2,
                                 gameManager.getHeight() - RedCat.CatHeight));
                     }
@@ -62,7 +60,7 @@ public class SummonMonster extends Thread{
                 }
                 else if (big > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new BigRedCat(big_cat,
+                        gameManager.regist(new RedCat(big_cat,
                                 gameManager.getHeight() / 2,
                                 gameManager.getHeight() - RedCat.CatHeight));
                     }

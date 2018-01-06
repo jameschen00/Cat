@@ -14,26 +14,28 @@ import tw.edu.ncut.gametest.R;
 //see annotation on Character.java
 public class RedCat extends CatCharacter {
     private int stepSize = 1;
-    private int attackSpeed = 0;
-    private int attackCount = 0;
+    private float attackSpeed = 1;
+    private float timer = 0;
 
     public static final int CatWidth = 15;
     public static final int CatHeight = 15;
 
     @Deprecated
-    public RedCat(Context context, int x, int y) {
-        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.cat_red);
-        tag = "RED TEAM";
-    }
-
     public RedCat(Bitmap bitmap, int x, int y) {
         super(bitmap, 100, 20, x, y, CatWidth, CatHeight);
         tag = "RED TEAM";
     }
 
+    @Deprecated
     public RedCat(Bitmap bitmap, int x, int y, int heal, int attack) {
         super(bitmap, heal, attack, x, y, CatWidth, CatHeight);
         tag = "RED TEAM";
+    }
+
+    public RedCat(Animation animation, int heal, int attack, int x, int y, int w, int h) {
+        super(animation, heal, attack, x, y, w, h);
+        tag = "RED TEAM";
+        animation.start();
     }
 
     @Override
@@ -44,18 +46,20 @@ public class RedCat extends CatCharacter {
         for(Character c : collisionList) {
             if(c.getTag().equals("BLUE TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
                 character = c;
-                if(attackCount == attackSpeed) {
-                    attackCount = 0;
+                if(timer >= attackSpeed) {
+                    if(animation != null) animation.setAnimationFrameIndex(ATTACK_ANIMATION);
+                    timer = 0;
                     character.onHit(this);
                 } else {
-                    attackCount += 1;
+                    timer += getDelTime();
                 }
                 break;
             }
         }
 
         if(character == null) {
-            attackCount = 0;
+            timer = 0;
+            if(animation != null) animation.setAnimationFrameIndex(WALK_ANIMATION);
             moveRight(screenWidth, stepSize);
         }
     }

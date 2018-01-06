@@ -53,8 +53,8 @@ abstract class Character {
         previousTime = System.currentTimeMillis();
     }
 
-    final long getDelTime() {
-        return System.currentTimeMillis() - previousTime;
+    final float getDelTime() {
+        return (float)(System.currentTimeMillis() - previousTime) / 1000;
     }
     /***************************************************/
 
