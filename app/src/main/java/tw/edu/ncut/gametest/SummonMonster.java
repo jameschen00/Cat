@@ -26,8 +26,8 @@ public class SummonMonster extends Thread{
     public SummonMonster(GameManager gameManager,int count){
         this.gameManager = gameManager;
         this.count = count;
-        normal_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_red);
-        mid_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_skyblue);
+        normal_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.orange_cat);
+        mid_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.orange_cat);
         big_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_orange);
     }
 
@@ -46,9 +46,9 @@ public class SummonMonster extends Thread{
             try {
                 if (normal > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new RedCat(normal_cat,
+                        gameManager.regist(new MidRedCat(normal_cat,
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - MidRedCat.CatHeight));
                     }
                     normal--;
                 }
@@ -56,7 +56,7 @@ public class SummonMonster extends Thread{
                     if (gameManager != null) {
                         gameManager.regist(new MidRedCat(mid_cat,
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - MidRedCat.CatHeight));
                     }
                     mid--;
                 }
@@ -64,7 +64,7 @@ public class SummonMonster extends Thread{
                     if (gameManager != null) {
                         gameManager.regist(new BigRedCat(big_cat,
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - BigRedCat.CatHeight));
                     }
                     big--;
                 }

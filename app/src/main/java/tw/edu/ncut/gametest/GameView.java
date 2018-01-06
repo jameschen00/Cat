@@ -20,7 +20,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     //
     private int count;
     //
-    private int x=0,y=0;
+    final private int size_y=10,size_x=10;
     private int BitmapSize;
     private int width,height;//螢幕的寬高
     private CatSquare catSquares[][];
@@ -39,7 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         thread = new Thread(this);
         holder = this.getHolder();
         holder.addCallback(this);
-        catSquares = new CatSquare[10][10];
+        catSquares = new CatSquare[size_y][size_x];
         gameState = true;
         list = new ArrayList<CatDestroy>();
         sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
@@ -58,8 +58,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         try {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.WHITE);
-            for(int i=0;i<10;i++)
-                for(int j=0;j<10;j++){
+            for(int i=0;i<size_y;i++)
+                for(int j=0;j<size_x;j++){
                     catSquares[i][j].draw(canvas);
                     catSquares[i][j].move(i,height);
                 }
@@ -78,10 +78,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     }
     @Override
     public void run() {
-        for(int i=0; i<10;i++) {
-            for (int j = 0; j < 10; j++) {
+        for(int i=0; i<size_y;i++) {
+            for (int j = 0; j < size_x; j++) {
                 int kind = (int) (Math.random()*10000)%4+1;
-                catSquares[i][j] = new CatSquare(getContext(), x + BitmapSize * j, y-i*BitmapSize, j,i,kind,BitmapSize);
+                catSquares[i][j] = new CatSquare(getContext(),  BitmapSize * j, -i*BitmapSize, j,i,kind,BitmapSize);
             }
         }
         while(true){
@@ -134,7 +134,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         switch(event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                for(int i=0;i<10 & j<10;i++)
+                for(int i=0;i<size_y & j<size_x;i++)
                     if (catSquares[i][j].getX() < x && catSquares[i][j].getX() + BitmapSize > x
                             && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
                         if(catSquares[i][j].state)
@@ -187,7 +187,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         }
     }
     public void up(int i,int j,int kind){
-        if(i+1<10){
+        if(i+1<size_y){
             if(catSquares[i+1][j].kind == kind){
                 catSquares[i][j].kind = kind*10; //標記
                 search(i+1,j,kind);
@@ -195,7 +195,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         }
     }
     public void right(int i,int j,int kind){
-        if(j+1<10){
+        if(j+1<size_x){
             if(catSquares[i][j+1].kind == kind){
                 catSquares[i][j].kind = kind*10; //標記
                 search(i,j+1,kind);
@@ -228,10 +228,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     }
     public void sortSquare(){
         int a=0;
-        while(a<10) {
+        while(a<size_y) {
             a++;
-            for (int i = 1; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
+            for (int i = 1; i < size_y; i++) {
+                for (int j = 0; j < size_x; j++) {
                     if (!catSquares[i - 1][j].state && catSquares[i][j].state)//判斷下面方塊是否消除
                     {
                         CatSquare temp; //上下方塊交換
@@ -247,12 +247,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
     }
     public void CreateNewSquare(){
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < size_y; i++) {
+            for (int j = 0; j < size_x; j++) {
                 if(!catSquares[i][j].state)
                 {
                     int kind = (int) (Math.random()*10000)%4+1;
-                    CatSquare c = new CatSquare(getContext(), x + BitmapSize * j, y-i*BitmapSize, j,i,kind,BitmapSize);
+                    CatSquare c = new CatSquare(getContext(),  BitmapSize * j, -i*BitmapSize, j,i,kind,BitmapSize);
                     catSquares[i][j] = c;
 
                 }

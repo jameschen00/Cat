@@ -2,6 +2,7 @@ package tw.edu.ncut.gametest.CatEnemy;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class MidRedCat extends CatCharacter {
     private int attackSpeed = 0;
     private int attackCount = 0;
 
-    public static final int CatWidth = 15;
-    public static final int CatHeight = 15;
+    public static final int CatWidth = 100;
+    public static final int CatHeight = 100;
 
     @Deprecated
     public MidRedCat(Context context, int x, int y) {
@@ -52,6 +53,12 @@ public class MidRedCat extends CatCharacter {
         if(character == null) {
             attackCount = 0;
             moveRight(screenWidth, stepSize);
+        }
+    }
+    @Override
+    void onDraw(Canvas canvas) {
+        if(bitmap != null) {
+            canvas.drawBitmap(bitmap, x, y, null);
         }
     }
 
