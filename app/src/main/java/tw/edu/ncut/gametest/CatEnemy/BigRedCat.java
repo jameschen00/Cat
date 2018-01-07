@@ -15,8 +15,8 @@ import tw.edu.ncut.gametest.R;
 
 public class BigRedCat extends RedCat{
 
-    public static final int CatWidth = 150;
-    public static final int CatHeight = 84;
+    public static final int CatWidth = 100;
+    public static final int CatHeight = 56;
 
     public BigRedCat(Context context, int x, int y){
         this(context, 200, 15, x, y, CatWidth, CatHeight);

@@ -15,8 +15,8 @@ import tw.edu.ncut.gametest.R;
 
 public class MidRedCat extends RedCat {
 
-    public static final int CatWidth = 100;
-    public static final int CatHeight = 56;
+    public static final int CatWidth = 50;
+    public static final int CatHeight = 28;
 
     public MidRedCat(Context context, int x, int y){
         this(context, 100, 20, x, y, CatWidth, CatHeight);
