@@ -21,6 +21,10 @@ public class TextCharacter extends Character {
         this.textSize = textSize;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     protected void update(int screenWidth, int screenHeight) { }
 

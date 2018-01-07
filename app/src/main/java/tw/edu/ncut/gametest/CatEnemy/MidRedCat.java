@@ -32,7 +32,9 @@ public class MidRedCat extends RedCat {
         List<Long> w_time = new LinkedList<>();
         w_time.add(300L);
         w_time.add(300L);
-        animation.addAnimation(new BitmapFrame(w_frame, w_time));
+        BitmapFrame b_frame = new BitmapFrame(w_frame, w_time);
+        b_frame.setReplay(true);
+        animation.addAnimation(b_frame);
 
         List<Bitmap> a_frame = new LinkedList<>();
         a_frame.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.neko3), w, h, false));

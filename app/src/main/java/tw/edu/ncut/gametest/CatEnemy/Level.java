@@ -97,7 +97,7 @@ public class Level extends Thread{
                                 20));
                         Level.this.gameManager.pauseGame();
                         gameClear = true;
-                        onGameEnd("GAME CLEAR");
+                        onGameEnd("Victory");
                     }
                 }));
     }
