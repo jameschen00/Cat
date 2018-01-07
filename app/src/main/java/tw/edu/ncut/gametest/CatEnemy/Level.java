@@ -34,6 +34,7 @@ public class Level extends Thread{
 
     @Override
     public void run() {
+        int i = 0;
         while(!allOver) {
             try {
                 Thread.sleep(500);
@@ -43,9 +44,9 @@ public class Level extends Thread{
 
             if(!(gameClear || gameOver)) {
                 gameManager.regist(
-                        new BlueCat(cat1,
-                                gameManager.getWidth() - BlueCat.CatWidth / 2 - gameManager.getHeight() / 2,
-                                gameManager.getHeight() - BlueCat.CatHeight));
+                        new EnemyShrimp(gameManager.getContext(),
+                                gameManager.getWidth() - EnemyShrimp.CatWidth / 2 - gameManager.getHeight() / 2,
+                                gameManager.getHeight() - EnemyShrimp.CatHeight));
             }
         }
     }
@@ -53,13 +54,15 @@ public class Level extends Thread{
     private void init() {
         gameClear = false;
         gameOver = false;
+        Bitmap a = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.red);
+        int w = (int)(gameManager.getHeight() * ((float)a.getWidth() / a.getHeight()));
         gameManager.regist(new Castle(
-                BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.red),
+                a,
                 1000,
                 0,
                 0,
                 0,
-                gameManager.getHeight() / 2,
+                w,
                 gameManager.getHeight(),
                 "RED TEAM",
                 new Castle.DestroyCallBack() {
@@ -74,14 +77,15 @@ public class Level extends Thread{
                         onGameEnd("GAME OVER");
                     }
                 }));
-
+        a = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.blue);
+        w = (int)(gameManager.getHeight() * ((float)a.getWidth() / a.getHeight()));
         gameManager.regist(new Castle(
-                BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.blue),
+                a,
                 1000,
                 0,
-                gameManager.getWidth() - gameManager.getHeight() / 2,
+                gameManager.getWidth() - w,
                 0,
-                gameManager.getHeight() / 2,
+                w,
                 gameManager.getHeight(),
                 "BLUE TEAM",
                 new Castle.DestroyCallBack() {
@@ -99,6 +103,7 @@ public class Level extends Thread{
     }
 
     private void onGameEnd(final String gameState) {
+        gameView.GamePause();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -119,6 +124,8 @@ public class Level extends Thread{
                         gameManager.resumeGame();
                         init();
                         gameManager.updateScreen();
+                        gameView.GameStart();
+
                     }
                 });
                 dlgAlert.setNegativeButton("No Thanks", new DialogInterface.OnClickListener() {

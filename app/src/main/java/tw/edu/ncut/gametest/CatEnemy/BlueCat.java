@@ -18,48 +18,53 @@ import tw.edu.ncut.gametest.R;
 //see annotation on Character.java
 public class BlueCat extends CatCharacter {
     private int stepSize = 1;
-    private int attackSpeed = 0;
-    private int attackCount = 0;
+    private float attackSpeed = 1;
+    private float timer = 0;
 
-    public static final int CatWidth = 15;
-    public static final int CatHeight = 15;
-
-    @Deprecated
-    public BlueCat(Context context, int x, int y) {
-        super(context, 100, 20, x, y, CatWidth, CatHeight, R.drawable.cat_blue);
+    public BlueCat(int heal, int attack, int x, int y, int w, int h){
+        super(heal, attack, x, y, w, h);
         tag = "BLUE TEAM";
     }
-
-    public BlueCat(Bitmap bitmap, int x, int y) {
-        super(bitmap, 100, 20, x, y, CatWidth, CatHeight);
+    public BlueCat(Animation animation, int heal, int attack, int x, int y, int w, int h) {
+        super(animation, heal, attack, x, y, w, h);
         tag = "BLUE TEAM";
+        animation.start();
     }
 
-    public BlueCat(Bitmap bitmap, int x, int y, int heal, int attack) {
-        super(bitmap, heal, attack, x, y, CatWidth, CatHeight);
-        tag = "BLUE TEAM";
+    public void setStepSize(int stepSize){
+        this.stepSize = stepSize;
     }
+
+    public int getStepSize(){ return stepSize; }
+
+    public void setAttackSpeed(float attackSpeed) {
+        this.attackSpeed = attackSpeed;
+    }
+
+    public float getAttackSpeed() { return attackSpeed; }
 
     @Override
     protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();
-        Character character = null;
 
+        boolean hasTarget = false;
         for(Character c : collisionList) {
             if(c.getTag().equals("RED TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
-                character = c;
-                if(attackCount == attackSpeed) {
-                    attackCount = 0;
-                    character.onHit(this);
+                if(timer >= attackSpeed) {
+                    if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
+                    timer = 0;
+                    c.onHit(this);
                 } else {
-                    attackCount += 1;
+                    timer += getDelTime();
                 }
+                hasTarget = true;
                 break;
             }
         }
 
-        if(character == null) {
-            attackCount = 0;
+        if(!hasTarget) {
+            timer = 0;
+            if(animation != null) animation.playAnimation(WALK_ANIMATION);
             moveLeft(stepSize);
         }
     }

@@ -20,7 +20,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     //
     private int count;
     //
-    final private int size_y=10,size_x=10;
+    final private int size_y=12,size_x=10;
     private int BitmapSize;
     private int width,height;//螢幕的寬高
     private CatSquare catSquares[][];
@@ -52,6 +52,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     }
     public void GamePause(){
         gameState = false;
+    }
+    public void GameStart() {
+        gameState = true;
     }
 
     private void catDraw(){
@@ -260,4 +263,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         }
         new SummonMonster(gameManager,count).start();
     }
+
+
 }

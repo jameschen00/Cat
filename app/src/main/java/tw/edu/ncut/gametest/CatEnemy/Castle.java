@@ -1,6 +1,9 @@
 package tw.edu.ncut.gametest.CatEnemy;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import tw.edu.ncut.gametest.R;
 
 /**
  * Created by HatsuneMiku on 2018/1/4.
@@ -19,15 +22,21 @@ public class Castle extends CatCharacter {
     private boolean isOnHit = false;
 
     public Castle(Bitmap bitmap, int heal, int attack, int x, int y, int w, int h, DestroyCallBack onDestroyCallBack){
-        super(bitmap, heal, attack, x, y, w, h);
+        super(heal, attack, x, y, w, h);
+        Bitmap bmp = Bitmap.createScaledBitmap(bitmap, w, h, false);
+        animation.addAnimation(new OneBitmapFrame(bmp));
         destroyCallBack = onDestroyCallBack;
+        animation.start();
     }
 
     public Castle(Bitmap bitmap, int heal, int attack, int x, int y, int w, int h,
                   String tag, DestroyCallBack onDestroyCallBack) {
 
-        super(bitmap, heal, attack, x, y, w, h);
+        super(heal, attack, x, y, w, h);
+        Bitmap bmp = Bitmap.createScaledBitmap(bitmap, w, h, false);
+        animation.addAnimation(new OneBitmapFrame(bmp));
         destroyCallBack = onDestroyCallBack;
+        animation.start();
         this.tag = tag;
     }
 
