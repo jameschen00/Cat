@@ -47,30 +47,19 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback, 
     public void run() {
         long startTime = System.currentTimeMillis();
         if(!pause) {
-            for (int i = 0; i < characterList.size(); ++i) { //destroy wait for destroy
-                Character character = characterList.get(i);
-                switch (character.getState()) {
-                    case WAIT_FOR_DESTROY:
-                        character.onDestroy();
-                        unregist(character);
-                        --i;
-                        break;
-                }
-            }
 
-            Canvas canvas = holder.lockCanvas();
-            canvas.drawColor(Color.WHITE);
+            int size = characterList.size();
 
-            for (int i = 0; i < characterList.size(); ++i) { // main thread, process collision, update, etc...
+            for (int i = 0; i < size; ++i) { // main thread, process collision, update, etc...
                 Character chA = characterList.get(i);
                 chA.update(GameManager.this.getWidth(), GameManager.this.getHeight());
                 if (chA.getState() == Character.CharacterState.COLLISION_ON) {
                     Rect rectA = chA.getRect();
                     chA.__collision_init();
-                    for (int o = i + 1; o < characterList.size(); ++o) {
+                    for (int o = i + 1; o < size; ++o) {
                         Character chB = characterList.get(o);
                         if (chB.getState() == Character.CharacterState.COLLISION_ON) {
-                            boolean isCollision = rectA.intersect(chB.getRect());
+                            boolean isCollision = Rect.intersects(rectA, chB.getRect());
                             if (isCollision) {
                                 chA.__collision(chB);
                                 chB.__collision(chA);
@@ -79,9 +68,24 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback, 
                     }
                     chA.__collision_end();
                 }
-                chA.onDraw(canvas);
+            }
+            Canvas canvas = holder.lockCanvas();
+            canvas.drawColor(Color.WHITE);
+
+            for (int i = 0; i < characterList.size(); ++i) { //destroy wait for destroy
+                Character character = characterList.get(i);
+                switch (character.getState()) {
+                    case WAIT_FOR_DESTROY:
+                        character.onDestroy();
+                        unregist(character);
+                        --i;
+                        break;
+                    default:
+                        character.onDraw(canvas);
+                }
             }
             holder.unlockCanvasAndPost(canvas);
+
         } else if(requestUpdateScreen) {
             requestUpdateScreen = false;
             Canvas canvas = holder.lockCanvas();

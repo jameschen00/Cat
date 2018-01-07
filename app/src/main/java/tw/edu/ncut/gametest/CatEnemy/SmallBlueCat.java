@@ -11,8 +11,8 @@ import tw.edu.ncut.gametest.R;
  */
 
 public class SmallBlueCat extends BlueCat {
-    public static final int CatWidth = 15;
-    public static final int CatHeight = 15;
+    public static final int CatWidth = 40;
+    public static final int CatHeight = 40;
 
     public SmallBlueCat(Context context, int x, int y){
         this(context, 100, 20, x, y, CatWidth, CatHeight);

@@ -46,23 +46,23 @@ public class BlueCat extends CatCharacter {
     @Override
     protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();
-        Character character = null;
 
+        boolean hasTarget = false;
         for(Character c : collisionList) {
             if(c.getTag().equals("RED TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
-                character = c;
                 if(timer >= attackSpeed) {
                     if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                     timer = 0;
-                    character.onHit(this);
+                    c.onHit(this);
                 } else {
                     timer += getDelTime();
                 }
+                hasTarget = true;
                 break;
             }
         }
 
-        if(character == null) {
+        if(!hasTarget) {
             timer = 0;
             if(animation != null) animation.playAnimation(WALK_ANIMATION);
             moveLeft(stepSize);

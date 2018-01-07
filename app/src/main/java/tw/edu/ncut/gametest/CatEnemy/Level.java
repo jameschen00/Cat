@@ -34,6 +34,7 @@ public class Level extends Thread{
 
     @Override
     public void run() {
+        int i = 0;
         while(!allOver) {
             try {
                 Thread.sleep(500);

@@ -19,7 +19,7 @@ public class MidRedCat extends RedCat {
     public static final int CatHeight = 28;
 
     public MidRedCat(Context context, int x, int y){
-        this(context, 100, 20, x, y, CatWidth, CatHeight);
+        this(context, 200, 20, x, y, CatWidth, CatHeight);
     }
 
     public MidRedCat(Context context, int heal, int attack, int x, int y, int w, int h) {
