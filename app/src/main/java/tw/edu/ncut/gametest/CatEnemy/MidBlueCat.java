@@ -2,6 +2,7 @@ package tw.edu.ncut.gametest.CatEnemy;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+
 import android.graphics.BitmapFactory;
 
 import java.util.LinkedList;
@@ -13,17 +14,20 @@ import tw.edu.ncut.gametest.R;
  * Created by HatsuneMiku on 2018/1/6.
  */
 
-public class MidRedCat extends RedCat {
+public class MidBlueCat extends RedCat {
 
-    public static final int CatWidth = 50;
-    public static final int CatHeight = 28;
 
-    public MidRedCat(Context context, int x, int y){
-        this(context, 200, 20, x, y, CatWidth, CatHeight);
+    public static final int CatWidth = 75;
+    public static final int CatHeight = 50;
+
+    public MidBlueCat(Context context, int x, int y){
+        this(context, 300, 30, x, y, CatWidth, CatHeight);
     }
 
-    public MidRedCat(Context context, int heal, int attack, int x, int y, int w, int h) {
+    public MidBlueCat(Context context, int heal, int attack, int x, int y, int w, int h) {
         super(heal, attack, x, y, w, h);
+
+        setAttackSpeed(0.6f);
 
         List<Bitmap> w_frame = new LinkedList<>();
         w_frame.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.neko1), w, h, false));
@@ -35,6 +39,7 @@ public class MidRedCat extends RedCat {
         BitmapFrame b_frame = new BitmapFrame(w_frame, w_time);
         b_frame.setReplay(true);
         animation.addAnimation(b_frame);
+
 
         List<Bitmap> a_frame = new LinkedList<>();
         a_frame.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.neko3), w, h, false));

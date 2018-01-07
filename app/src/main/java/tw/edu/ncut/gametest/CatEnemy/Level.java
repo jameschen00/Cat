@@ -44,9 +44,9 @@ public class Level extends Thread{
 
             if(!(gameClear || gameOver)) {
                 gameManager.regist(
-                        new SmallBlueCat(gameManager.getContext(),
-                                gameManager.getWidth() - SmallBlueCat.CatWidth / 2 - gameManager.getHeight() / 2,
-                                gameManager.getHeight() - SmallBlueCat.CatHeight));
+                        new EnemyShrimp(gameManager.getContext(),
+                                gameManager.getWidth() - EnemyShrimp.CatWidth / 2 - gameManager.getHeight() / 2,
+                                gameManager.getHeight() - EnemyShrimp.CatHeight));
             }
         }
     }
@@ -103,6 +103,7 @@ public class Level extends Thread{
     }
 
     private void onGameEnd(final String gameState) {
+        gameView.GamePause();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -123,6 +124,8 @@ public class Level extends Thread{
                         gameManager.resumeGame();
                         init();
                         gameManager.updateScreen();
+                        gameView.GameStart();
+
                     }
                 });
                 dlgAlert.setNegativeButton("No Thanks", new DialogInterface.OnClickListener() {
