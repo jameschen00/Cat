@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import tw.edu.ncut.gametest.CatEnemy.BigRedCat;
 import tw.edu.ncut.gametest.CatEnemy.GameManager;
+import tw.edu.ncut.gametest.CatEnemy.MidRedCat;
 import tw.edu.ncut.gametest.CatEnemy.RedCat;
-import tw.edu.ncut.gametest.MainActivity;
-import tw.edu.ncut.gametest.R;
+import tw.edu.ncut.gametest.CatEnemy.SmallRedCat;
 
 /**
  * Created by HatsuneMiku on 2018/1/5.
@@ -16,17 +17,12 @@ import tw.edu.ncut.gametest.R;
 public class SummonMonster extends Thread{
 
     private GameManager gameManager;
-    private Bitmap normal_cat,mid_cat,big_cat;
     private int count,normal,mid,big;
     public boolean state =true;
-
 
     public SummonMonster(GameManager gameManager,int count){
         this.gameManager = gameManager;
         this.count = count;
-        normal_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_red);
-        mid_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_skyblue);
-        big_cat = BitmapFactory.decodeResource(gameManager.getContext().getResources(), R.drawable.cat_orange);
     }
 
     @Override
@@ -44,25 +40,25 @@ public class SummonMonster extends Thread{
             try {
                 if (normal > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new RedCat(normal_cat,
+                        gameManager.regist(new SmallRedCat(gameManager.getContext(),
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - SmallRedCat.CatHeight));
                     }
                     normal--;
                 }
                 else if (mid > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new RedCat(mid_cat,
+                        gameManager.regist(new MidRedCat(gameManager.getContext(),
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - MidRedCat.CatHeight));
                     }
                     mid--;
                 }
                 else if (big > 0) {
                     if (gameManager != null) {
-                        gameManager.regist(new RedCat(big_cat,
+                        gameManager.regist(new BigRedCat(gameManager.getContext(),
                                 gameManager.getHeight() / 2,
-                                gameManager.getHeight() - RedCat.CatHeight));
+                                gameManager.getHeight() - BigRedCat.CatHeight));
                     }
                     big--;
                 }

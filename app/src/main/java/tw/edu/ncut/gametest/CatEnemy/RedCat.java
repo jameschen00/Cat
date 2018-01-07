@@ -17,18 +17,8 @@ public class RedCat extends CatCharacter {
     private float attackSpeed = 1;
     private float timer = 0;
 
-    public static final int CatWidth = 15;
-    public static final int CatHeight = 15;
-
-    @Deprecated
-    public RedCat(Bitmap bitmap, int x, int y) {
-        super(bitmap, 100, 20, x, y, CatWidth, CatHeight);
-        tag = "RED TEAM";
-    }
-
-    @Deprecated
-    public RedCat(Bitmap bitmap, int x, int y, int heal, int attack) {
-        super(bitmap, heal, attack, x, y, CatWidth, CatHeight);
+    public RedCat(int heal, int attack, int x, int y, int w, int h){
+        super(heal, attack, x, y, w, h);
         tag = "RED TEAM";
     }
 
@@ -37,6 +27,18 @@ public class RedCat extends CatCharacter {
         tag = "RED TEAM";
         animation.start();
     }
+
+    public void setStepSize(int stepSize){
+        this.stepSize = stepSize;
+    }
+
+    public int getStepSize(){ return stepSize; }
+
+    public void setAttackSpeed(float attackSpeed) {
+        this.attackSpeed = attackSpeed;
+    }
+
+    public float getAttackSpeed() { return attackSpeed; }
 
     @Override
     protected void update(int screenWidth, int screenHeight) {
@@ -47,7 +49,7 @@ public class RedCat extends CatCharacter {
             if(c.getTag().equals("BLUE TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
                 character = c;
                 if(timer >= attackSpeed) {
-                    if(animation != null) animation.setAnimationFrameIndex(ATTACK_ANIMATION);
+                    if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                     timer = 0;
                     character.onHit(this);
                 } else {
@@ -59,7 +61,7 @@ public class RedCat extends CatCharacter {
 
         if(character == null) {
             timer = 0;
-            if(animation != null) animation.setAnimationFrameIndex(WALK_ANIMATION);
+            if(animation != null) animation.playAnimation(WALK_ANIMATION);
             moveRight(screenWidth, stepSize);
         }
     }

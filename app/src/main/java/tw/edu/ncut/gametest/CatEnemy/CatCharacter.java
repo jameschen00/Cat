@@ -16,24 +16,9 @@ public abstract class CatCharacter extends Character {
     protected int heal;
     protected int attack;
     protected int x, y, w, h;
-    protected Bitmap bitmap;
     protected Animation animation;
     public final int WALK_ANIMATION = 0;
     public final int ATTACK_ANIMATION = 1;
-
-    @Deprecated
-    public CatCharacter(Bitmap bitmap, int heal, int attack, int x, int y, int w, int h){
-        this.heal = heal;
-        this.attack = attack;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.bitmap = bitmap;
-        if(bitmap.getWidth() != w && bitmap.getHeight() != h) {
-            this.bitmap = Bitmap.createScaledBitmap(bitmap, w, h, false);
-        }
-    }
 
     public CatCharacter(Animation animation, int heal, int attack, int x, int y, int w, int h){
         this.animation = animation;
@@ -46,6 +31,7 @@ public abstract class CatCharacter extends Character {
     }
 
     public CatCharacter(int heal, int attack, int x, int y, int w, int h){
+        animation = new Animation();
         this.heal = heal;
         this.attack = attack;
         this.x = x;
@@ -69,8 +55,6 @@ public abstract class CatCharacter extends Character {
     void onDraw(Canvas canvas) {
         if(animation != null) {
             animation.onDraw(canvas, x, y);
-        } else if(bitmap != null) {
-            canvas.drawBitmap(bitmap, x, y, null);
         }
     }
 

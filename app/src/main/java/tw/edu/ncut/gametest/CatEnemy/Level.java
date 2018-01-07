@@ -43,9 +43,9 @@ public class Level extends Thread{
 
             if(!(gameClear || gameOver)) {
                 gameManager.regist(
-                        new BlueCat(cat1,
-                                gameManager.getWidth() - BlueCat.CatWidth / 2 - gameManager.getHeight() / 2,
-                                gameManager.getHeight() - BlueCat.CatHeight));
+                        new SmallBlueCat(gameManager.getContext(),
+                                gameManager.getWidth() - SmallBlueCat.CatWidth / 2 - gameManager.getHeight() / 2,
+                                gameManager.getHeight() - SmallBlueCat.CatHeight));
             }
         }
     }
