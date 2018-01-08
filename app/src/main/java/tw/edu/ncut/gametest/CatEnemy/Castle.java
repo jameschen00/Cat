@@ -83,7 +83,9 @@ public class Castle extends CatCharacter {
             state = CharacterState.WAIT_FOR_DESTROY;
             healBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         } else {
-            healBitmap = Bitmap.createBitmap((int) (this.w * ((float) getHeal() / firstHeal)), (int) (this.h * 0.1), Bitmap.Config.ARGB_8888);
+            int hh = Math.max((int) (this.w * ((float) getHeal() / firstHeal)), 1);
+            int ww = Math.max((int) (this.h * 0.1), 1);
+            healBitmap = Bitmap.createBitmap(hh, ww, Bitmap.Config.ARGB_8888);
             healBitmap.eraseColor(Color.RED);
         }
     }

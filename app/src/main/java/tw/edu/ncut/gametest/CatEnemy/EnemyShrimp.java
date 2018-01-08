@@ -18,13 +18,13 @@ public class EnemyShrimp extends BlueCat {
     public static final int CatHeight = 50;
 
     public EnemyShrimp(Context context, int x, int y){
-        this(context, 100, 20, x, y, CatWidth, CatHeight);
+        this(context, 250, 30, x, y, CatWidth, CatHeight);
     }
 
     public EnemyShrimp(Context context, int heal, int attack, int x, int y, int w, int h) {
         super(heal, attack, x, y, w, h);
 
-        setAttackSpeed(0.6f);
+        setAttackSpeed(0.5f);
 
         List<Bitmap> w_frame = new LinkedList<>();
         w_frame.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.haibi2), w, h, false));

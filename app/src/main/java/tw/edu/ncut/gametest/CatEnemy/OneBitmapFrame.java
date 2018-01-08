@@ -30,6 +30,11 @@ public class OneBitmapFrame implements AnimationFrame {
     }
 
     @Override
+    public boolean isEnd() {
+        return false;
+    }
+
+    @Override
     public boolean setIndex(int index) {
         return true;
     }

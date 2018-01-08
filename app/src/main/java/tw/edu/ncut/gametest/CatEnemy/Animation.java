@@ -16,6 +16,7 @@ interface AnimationFrame {
     void init();
     int size();
     int getIndex();
+    boolean isEnd();
     boolean setIndex(int index);
     void draw(Canvas canvas, int x, int y);
 }
@@ -29,7 +30,8 @@ public class Animation {
     public Animation() {};
 
     public void playAnimation(int index) {
-        if(index >= animationList.size() || animationIndex == index){
+        if(index >= animationList.size() ||
+                (animationIndex == index && !animationList.get(animationIndex).isEnd())){
             return;
         }
         animationIndex = index;
@@ -51,6 +53,7 @@ public class Animation {
     }
     public int getAnimationIndex() { return animationIndex; }
     public int getAnimationSize() { return animationList.size(); }
+    public boolean isAnimationEnd() { return this.animationList.get(animationIndex).isEnd(); }
     public boolean setAnimationFrameIndex(int index) {
         if(animationIndex >= animationList.size()) {
             return false;

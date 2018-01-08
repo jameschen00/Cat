@@ -37,16 +37,22 @@ public class Level extends Thread{
         int i = 0;
         while(!allOver) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             if(!(gameClear || gameOver)) {
                 gameManager.regist(
-                        new EnemyShrimp(gameManager.getContext(),
-                                gameManager.getWidth() - EnemyShrimp.CatWidth / 2 - gameManager.getHeight() / 2,
-                                gameManager.getHeight() - EnemyShrimp.CatHeight));
+                        new SmallBlueCat(gameManager.getContext(),
+                                gameManager.getWidth() - SmallBlueCat.CatWidth / 2 - gameManager.getHeight() / 2,
+                                gameManager.getHeight() - SmallBlueCat.CatHeight));
+                if(Math.random()  > 0.8){
+                    gameManager.regist(
+                            new EnemyShrimp(gameManager.getContext(),
+                                    gameManager.getWidth() - EnemyShrimp.CatWidth / 2 - gameManager.getHeight() / 2,
+                                    gameManager.getHeight() - EnemyShrimp.CatHeight));
+                }
             }
         }
     }

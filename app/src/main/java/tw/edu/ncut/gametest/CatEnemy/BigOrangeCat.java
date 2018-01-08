@@ -15,11 +15,11 @@ import tw.edu.ncut.gametest.R;
 
 public class BigOrangeCat extends RedCat{
 
-    public static final int CatWidth = 75;
-    public static final int CatHeight = 50;
+    public static final int CatWidth = 150;
+    public static final int CatHeight = 100;
 
     public BigOrangeCat(Context context, int x, int y){
-        this(context, 900, 40, x, y, CatWidth, CatHeight);
+        this(context, 300, 20, x, y, CatWidth, CatHeight);
     }
 
     public BigOrangeCat(Context context, int heal, int attack, int x, int y, int w, int h) {

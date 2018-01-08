@@ -50,8 +50,8 @@ public class BlueCat extends CatCharacter {
         boolean hasTarget = false;
         for(Character c : collisionList) {
             if(c.getTag().equals("RED TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY){
+                if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                 if(timer >= attackSpeed) {
-                    if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                     timer = 0;
                     c.onHit(this);
                 } else {

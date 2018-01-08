@@ -43,12 +43,12 @@ public class RedCat extends CatCharacter {
     @Override
     protected void update(int screenWidth, int screenHeight) {
         List<Character> collisionList = this.getCollisionList();
-        boolean hasTarget = false;
 
+        boolean hasTarget = false;
         for(Character c : collisionList) {
             if(c.getTag().equals("BLUE TEAM") && c.getState() != CharacterState.WAIT_FOR_DESTROY) {
+                if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                 if(timer >= attackSpeed) {
-                    if(animation != null) animation.playAnimation(ATTACK_ANIMATION);
                     timer = 0;
                     c.onHit(this);
                 } else {

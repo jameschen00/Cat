@@ -9,7 +9,7 @@ public class BitmapFrame implements AnimationFrame{
     List<Bitmap> frames;
     List<Long> playTime;
     int frameCount = 0;
-    private boolean replay = true;
+    private boolean replay = false;
     private long timer;
 
     public BitmapFrame(List<Bitmap> frames, List<Long> playTime){
@@ -43,10 +43,25 @@ public class BitmapFrame implements AnimationFrame{
     }
 
     @Override
-    public void draw(Canvas canvas, int x, int y) {
-        if(frameCount == frames.size())
-            return;
+    public boolean isEnd() {
+        if(replay)
+            return false;
         long time = System.currentTimeMillis() - timer;
+        if(frameCount == frames.size()) {
+            if (time > playTime.get(frameCount - 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void draw(Canvas canvas, int x, int y) {
+        long time = System.currentTimeMillis() - timer;
+        if(frameCount == frames.size()) {
+            canvas.drawBitmap(frames.get(frameCount - 1), x, y, null);
+            return;
+        }
         if(time > playTime.get(frameCount)) {
             canvas.drawBitmap(frames.get(frameCount), x, y, null);
             ++frameCount;
