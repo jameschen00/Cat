@@ -32,7 +32,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
     private List<CatDestroy> list;
     private SoundPool sound;
     private boolean gameState;
-    int nyw;
+    int normal_sound;
     //
     public GameView(Context context, AttributeSet attributeSet) {
         super(context,attributeSet);
@@ -43,8 +43,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         gameState = true;
         list = new ArrayList<CatDestroy>();
         sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
-        nyw = sound.load(context, R.raw.diamiond , 1);
-        Log.i("nyw",nyw+"");
+        normal_sound = sound.load(context, R.raw.normal_sound , 1);
+        Log.i("nyw",normal_sound+"");
     }
 
     public void setGameManager(GameManager gameManager) {
@@ -142,7 +142,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                             && catSquares[i][j].getY() < y && catSquares[i][j].getY() + BitmapSize > y) {
                         if(catSquares[i][j].state)
                         {
-                            sound.play(nyw,1,1,0,0,1);
+                            sound.play(normal_sound,1,1,0,0,1);
 
                             Log.i("No", i + "," + j );
                             Log.i("Kind",catSquares[i][j].kind+"");
