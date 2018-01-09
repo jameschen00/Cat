@@ -64,7 +64,7 @@ public class Level extends Thread{
         int w = (int)(gameManager.getHeight() * ((float)a.getWidth() / a.getHeight()));
         gameManager.regist(new Castle(
                 a,
-                1000,
+                10000,
                 0,
                 0,
                 0,
@@ -87,7 +87,7 @@ public class Level extends Thread{
         w = (int)(gameManager.getHeight() * ((float)a.getWidth() / a.getHeight()));
         gameManager.regist(new Castle(
                 a,
-                1000,
+                10000,
                 0,
                 gameManager.getWidth() - w,
                 0,

@@ -48,15 +48,13 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback, 
         long startTime = System.currentTimeMillis();
         if(!pause) {
 
-            int size = characterList.size();
-
-            for (int i = 0; i < size; ++i) { // main thread, process collision, update, etc...
+            for (int i = 0; i < characterList.size(); ++i) { // main thread, process collision, update, etc...
                 Character chA = characterList.get(i);
                 chA.update(GameManager.this.getWidth(), GameManager.this.getHeight());
                 if (chA.getState() == Character.CharacterState.COLLISION_ON) {
                     Rect rectA = chA.getRect();
                     chA.__collision_init();
-                    for (int o = i + 1; o < size; ++o) {
+                    for (int o = i + 1; o < characterList.size(); ++o) {
                         Character chB = characterList.get(o);
                         if (chB.getState() == Character.CharacterState.COLLISION_ON) {
                             boolean isCollision = Rect.intersects(rectA, chB.getRect());

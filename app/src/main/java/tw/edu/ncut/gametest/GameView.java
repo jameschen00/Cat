@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
         holder = this.getHolder();
         holder.addCallback(this);
         catSquares = new CatSquare[size_y][size_x];
-        gameState = true;
+        gameState = false;
         list = new ArrayList<CatDestroy>();
         sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
         normal_sound = sound.load(context, R.raw.normal_sound , 1);
@@ -87,8 +87,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                 catSquares[i][j] = new CatSquare(getContext(),  BitmapSize * j, -i*BitmapSize, j,i,kind,BitmapSize);
             }
         }
+        gameState = true;
         while(true){
-            catDraw();
+            if(gameState)
+                catDraw();
             try {
                 Thread.sleep(10);
             }catch (Exception e){
@@ -120,7 +122,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        gameState = false;
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -257,7 +259,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,Runn
                     int kind = (int) (Math.random()*10000)%4+1;
                     CatSquare c = new CatSquare(getContext(),  BitmapSize * j, -i*BitmapSize, j,i,kind,BitmapSize);
                     catSquares[i][j] = c;
-
                 }
             }
         }
